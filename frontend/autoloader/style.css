@@ -438,14 +438,56 @@ body.p2jb-done .stats-fill {
 }
 
 
-/* Quiet UI: no on-screen text clutter (except success at 100%) */
+/* Quiet UI: hide debug log / p2jb clutter; keep status, pct, success, footer */
 #logWrapper,
 #logContainer,
 #progressLabel,
 .brand-title,
 .brand-sub,
 .brand-status,
-#footer,
 #p2jbStats {
   display: none !important;
 }
+
+#statusMsg {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 12px rgba(255,255,255,0.4);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+#progressPct {
+  margin-top: 10px;
+  color: #2a9fff;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 12px rgba(42,159,255,0.45);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+body.done #statusMsg {
+  display: none !important;
+}
+body.done #progressPct {
+  color: #ffffff;
+}
+#footer {
+  position: fixed;
+  left: 0; right: 0; bottom: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: #2a9fff;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  line-height: 1.5;
+  text-shadow: 0 0 12px rgba(42,159,255,0.35);
+  z-index: 20;
+  display: block !important;
+}
+#footer b { color: #2a9fff; font-weight: 600; }
