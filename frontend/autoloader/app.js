@@ -8,6 +8,12 @@
   var progressLabel = document.getElementById('progressLabel');
   var progressPctEl = document.getElementById('progressPct');
   var statusMsgEl = document.getElementById('statusMsg');
+  var metaMsgEl = document.getElementById('metaMsg');
+  var elapsedMsgEl = document.getElementById('elapsedMsg');
+  var failMsgEl = document.getElementById('failMsg');
+  var successMsgEl = document.getElementById('successMsg');
+  var elapsedTimer = 0;
+  var elapsedStart = 0;
   var exploitEl = document.getElementById('exploit');
 
   /* After a WebProcess crash the PS5 browser restores this page together with
@@ -140,14 +146,62 @@
     }, 400);
   }
 
+  function stopElapsed() {
+    if (elapsedTimer) {
+      clearInterval(elapsedTimer);
+      elapsedTimer = 0;
+    }
+  }
+
+  function formatElapsed(ms) {
+    var s = Math.floor(ms / 1000);
+    var m = Math.floor(s / 60);
+    s = s % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function startElapsed() {
+    if (elapsedTimer) return;
+    elapsedStart = Date.now();
+    if (elapsedMsgEl) elapsedMsgEl.textContent = 'Elapsed 0:00';
+    elapsedTimer = setInterval(function () {
+      if (!elapsedMsgEl) return;
+      elapsedMsgEl.textContent = 'Elapsed ' + formatElapsed(Date.now() - elapsedStart);
+    }, 250);
+  }
+
+  function setMeta(fwStr, chain) {
+    if (!metaMsgEl) return;
+    metaMsgEl.textContent = 'FW ' + (fwStr || '—') + ' · chain ' + (chain || '—');
+  }
+
   function finishProgressSuccess(message) {
     progressDone = true;
+    stopElapsed();
     if (progressTimer) {
       clearInterval(progressTimer);
       progressTimer = 0;
     }
     updateProgress(100, message || 'Jailbreak completed successfully');
     try { document.body.className = 'done'; } catch (e) {}
+    if (successMsgEl) {
+      successMsgEl.innerHTML = '<span class="check">✓</span> Jailbreak completed successfully';
+    }
+  }
+
+  function finishProgressFail(message) {
+    progressDone = true;
+    stopElapsed();
+    if (progressTimer) {
+      clearInterval(progressTimer);
+      progressTimer = 0;
+    }
+    try { document.body.className = 'fail'; } catch (e) {}
+    if (failMsgEl) {
+      failMsgEl.textContent = message || 'Jailbreak failed - restart your console';
+    }
+    if (statusMsgEl) statusMsgEl.style.display = 'none';
+    uiLog(message || 'Jailbreak failed - restart your console', 'error');
   }
 
   window.uiLog = uiLog;
@@ -227,7 +281,7 @@
       }
     } else {
       uiLog('[ERROR] Autoload failed: ' + (data.why || 'unknown error'), 'error');
-      updateProgress(0, 'Autoload failed.');
+      finishProgressFail('Jailbreak failed - restart your console');
     }
     setTimeout(function () {
       if (data.ok) {
@@ -355,6 +409,10 @@
       var st = lastStageText || '';
       if (/fail|reboot|error|refus|unlucky/i.test(st) || lastStageCls.indexOf('bad') !== -1) {
         uiLog('[stage] ' + lastStageText, 'error');
+        if (!finished) {
+          finished = true;
+          finishProgressFail('Jailbreak failed - restart your console');
+        }
       } else if (/success|completed|elf loader ready|elfldr/i.test(st)
         || lastStageCls.indexOf('ok') !== -1) {
         uiLog('[stage] ' + lastStageText, 'success');
@@ -905,6 +963,7 @@
     if (statusMsgEl) statusMsgEl.textContent = 'Jailbreak started';
     updateProgress(0, 'Jailbreak started');
     startProgressDriver();
+    startElapsed();
 
     window.addEventListener('message', function (event) {
       var data = event.data;
@@ -920,12 +979,15 @@
        the shrink re-anchor (fresh documents start with an empty screen,
        so their lines stream normally). */
 
+    var fw = detectFirmware();
     var picked = pickExploit();
     if (!picked) {
-      updateProgress(0, 'Unsupported firmware.');
+      setMeta(fw ? fw.str : '—', 'unsupported');
+      finishProgressFail('Jailbreak failed - restart your console');
       return;
     }
     exploitMode = picked;
+    setMeta(fw ? fw.str : '—', picked);
     EXPLOIT_URL = picked === 'umtx2' ? UMTX2_URL
       : picked === 'p2jb' ? P2JB_URL
         : POOPS_URL;

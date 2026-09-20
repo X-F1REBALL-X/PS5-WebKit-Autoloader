@@ -438,7 +438,7 @@ body.p2jb-done .stats-fill {
 }
 
 
-/* Quiet UI: hide debug log / p2jb clutter; keep status, pct, success, footer */
+/* Quiet UI: hide debug log / p2jb clutter */
 #logWrapper,
 #logContainer,
 #progressLabel,
@@ -449,24 +449,59 @@ body.p2jb-done .stats-fill {
   display: none !important;
 }
 
+#appLogo {
+  width: 72px;
+  height: 72px;
+  margin: 0 0 14px;
+  position: relative;
+  z-index: 2;
+  -webkit-filter: drop-shadow(0 0 12px rgba(42,159,255,0.55));
+  filter: drop-shadow(0 0 12px rgba(42,159,255,0.55));
+}
 
 #titleMsg {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-shadow: 0 0 16px rgba(255,255,255,0.45);
   position: relative;
   z-index: 2;
   text-align: center;
 }
+#appVer {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #2a9fff;
+  border: 1px solid rgba(42,159,255,0.45);
+  border-radius: 999px;
+  text-transform: none;
+  vertical-align: middle;
+  text-shadow: none;
+}
+
+#metaMsg {
+  margin: 0 0 14px;
+  color: #9ad2ff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(42,159,255,0.3);
+}
 
 #statusMsg {
   margin: 0 0 8px;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-shadow: 0 0 12px rgba(255,255,255,0.4);
@@ -474,6 +509,49 @@ body.p2jb-done .stats-fill {
   z-index: 2;
   text-align: center;
 }
+
+#progressContainer {
+  width: min(420px, 78vw);
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: rgba(42,159,255,0.18);
+  border: 1px solid rgba(42,159,255,0.35);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  -webkit-box-shadow: 0 0 18px rgba(42,159,255,0.25);
+  box-shadow: 0 0 18px rgba(42,159,255,0.25);
+}
+#progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #2a9fff;
+  background: -webkit-linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
+  background: linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
+  -webkit-box-shadow: 0 0 18px rgba(42,159,255,0.85);
+  box-shadow: 0 0 18px rgba(42,159,255,0.85);
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transform-origin: left center;
+  transform-origin: left center;
+  -webkit-transition: -webkit-transform 0.35s ease-out;
+  transition: transform 0.35s ease-out;
+  -webkit-animation: barGlow 1.6s ease-in-out infinite;
+  animation: barGlow 1.6s ease-in-out infinite;
+}
+@-webkit-keyframes barGlow {
+  0%, 100% { -webkit-box-shadow: 0 0 10px rgba(42,159,255,0.45); box-shadow: 0 0 10px rgba(42,159,255,0.45); }
+  50% { -webkit-box-shadow: 0 0 22px rgba(42,159,255,0.95); box-shadow: 0 0 22px rgba(42,159,255,0.95); }
+}
+@keyframes barGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(42,159,255,0.45); }
+  50% { box-shadow: 0 0 22px rgba(42,159,255,0.95); }
+}
+
 #progressPct {
   margin-top: 10px;
   color: #2a9fff;
@@ -485,12 +563,79 @@ body.p2jb-done .stats-fill {
   z-index: 2;
   text-align: center;
 }
-body.done #statusMsg {
+
+#elapsedMsg {
+  margin-top: 6px;
+  color: #7eb6e8;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+#successMsg {
+  display: none;
+  margin-top: 22px;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+  line-height: 1.3;
+}
+#successMsg .check {
+  display: inline-block;
+  margin-right: 8px;
+  color: #47c76a;
+  text-shadow: 0 0 14px rgba(71,199,106,0.7);
+  font-size: 28px;
+}
+
+#failMsg {
+  display: none;
+  margin-top: 22px;
+  color: #ff5a5a;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 16px rgba(255,90,90,0.45);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+  line-height: 1.35;
+}
+
+body.done #statusMsg,
+body.fail #statusMsg {
   display: none !important;
 }
-body.done #progressPct {
-  color: #ffffff;
+body.done #progressPct { color: #ffffff; }
+body.done #successMsg { display: block; }
+body.done #failMsg { display: none !important; }
+body.done #progressBar {
+  -webkit-transform: scaleX(1) !important;
+  transform: scaleX(1) !important;
+  -webkit-animation: none;
+  animation: none;
 }
+body.fail #failMsg { display: block; }
+body.fail #successMsg { display: none !important; }
+body.fail #progressBar {
+  background: #ff5a5a !important;
+  -webkit-box-shadow: 0 0 18px rgba(255,90,90,0.7);
+  box-shadow: 0 0 18px rgba(255,90,90,0.7);
+  -webkit-animation: none;
+  animation: none;
+}
+body.fail #progressPct { color: #ff5a5a; }
+
 #footer {
   position: fixed;
   left: 0; right: 0; bottom: 10px;
