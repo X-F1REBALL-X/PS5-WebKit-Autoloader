@@ -207,8 +207,8 @@ main[hidden] {
   left: 0;
   height: 100%;
   width: 100%;
-  background: #38bdf8;
-  background: -webkit-linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+  background: #2a9fff;
+  background: -webkit-linear-gradient(90deg, #2563eb 0%, #2a9fff 100%);
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transform-origin: left center;
@@ -456,8 +456,8 @@ body.p2jb-stats #progressContainer {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #38bdf8;
-  background: -webkit-linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+  background: #2a9fff;
+  background: -webkit-linear-gradient(90deg, #2563eb 0%, #2a9fff 100%);
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transform-origin: left center;
