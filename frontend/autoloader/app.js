@@ -178,7 +178,7 @@
   function setMeta(fwStr, chain) {
     if (!metaMsgEl) return;
     if (chain === 'research_ul' || chain === 'userland only') {
-      metaMsgEl.textContent = 'FW ' + (fwStr || '—') + ' · userland only';
+      metaMsgEl.textContent = 'FW ' + (fwStr || '—') + ' · not supported';
       return;
     }
     metaMsgEl.textContent = 'FW ' + (fwStr || '—') + ' · chain ' + (chain || '—');
@@ -253,10 +253,7 @@
     /* Any other 13.xx UA: still refuse full JB (no public kex), even if we
        do not ship an exact offset profile for that minor version. */
     if (fw.num >= 13.0 && fw.num < 14.0) return 'research_ul';
-    uiLog('[ERROR] Unsupported firmware ' + fw.str +
-      ' (full JB: 1.00-5.50 umtx2, 7.00-12.00 poops, 12.02-12.70 p2jb;'
-      + ' 13.xx = userland offsets only, no public kernel exploit;'
-      + ' 6.xx unsupported).', 'error');
+    uiLog('Unsupported firmware ' + fw.str, 'error');
     return null;
   }
 
@@ -1005,14 +1002,8 @@
     if (picked === 'research_ul') {
       exploitMode = null;
       setMeta(fw ? fw.str : '—', 'research_ul');
-      uiLog('[INFO] Firmware ' + (fw ? fw.str : '?')
-        + ': WebKit userland offsets are available for research,'
-        + ' but there is no public kernel exploit / full jailbreak'
-        + ' for 13.xx yet.', 'warning');
-      finishProgressFail(
-        'FW ' + (fw ? fw.str : '13.xx')
-        + ' — userland only (offsets present; no public kernel exploit).'
-        + ' Full JB not available.');
+      uiLog('Firmware ' + (fw ? fw.str : '?') + ' is not supported yet.', 'warning');
+      finishProgressFail('This firmware is not supported yet');
       setTimeout(revealExploit, 800);
       return;
     }
