@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
-      <stop offset="0%" stop-color="#0a1628"/>
+    <radialGradient id="bg" cx="42%" cy="32%" r="78%">
+      <stop offset="0%" stop-color="#123a66"/>
+      <stop offset="55%" stop-color="#0a1c33"/>
       <stop offset="100%" stop-color="#000000"/>
     </radialGradient>
     <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7ec8ff"/>
-      <stop offset="50%" stop-color="#2a9fff"/>
+      <stop offset="0%" stop-color="#9ad2ff"/>
+      <stop offset="45%" stop-color="#2a9fff"/>
       <stop offset="100%" stop-color="#1a7fd9"/>
     </linearGradient>
-    <linearGradient id="letter" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="letters" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#9ad2ff"/>
+      <stop offset="100%" stop-color="#cfe9ff"/>
     </linearGradient>
   </defs>
   <circle cx="512" cy="512" r="500" fill="url(#bg)"/>
-  <circle cx="512" cy="512" r="430" fill="none" stroke="url(#ring)" stroke-width="36"/>
-  <circle cx="512" cy="512" r="370" fill="none" stroke="#2a9fff" stroke-opacity="0.35" stroke-width="8"/>
-  <!-- Stylized S -->
-  <path fill="url(#letter)" d="M620 340c-28-48-78-78-148-78-102 0-170 52-170 132 0 72 48 108 148 132l36 10c62 16 88 34 88 66 0 40-40 66-108 66-62 0-108-24-134-70l-70 42c40 72 114 110 204 110 118 0 196-58 196-150 0-78-50-118-156-146l-36-10c-56-16-80-32-80-60 0-34 34-56 92-56 52 0 90 20 112 56l78-44z"/>
+  <circle cx="512" cy="512" r="438" fill="none" stroke="url(#ring)" stroke-width="34"/>
+  <circle cx="512" cy="512" r="380" fill="none" stroke="#2a9fff" stroke-opacity="0.28" stroke-width="8"/>
+  <!-- WK monogram -->
+  <g fill="url(#letters)">
+    <!-- W -->
+    <path d="M188 320h92l62 268 70-268h88l70 268 62-268h92L612 704H508l-66-252-66 252H272L188 320z"/>
+    <!-- K -->
+    <path d="M640 320h96v152l118-152h112L794 512l178 192H858L736 552v152h-96V320z"/>
+  </g>
 </svg>
