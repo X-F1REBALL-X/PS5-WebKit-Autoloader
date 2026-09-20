@@ -35,8 +35,6 @@ The app picks the chain automatically from the PS5 firmware in the browser user-
 
 ## Setup
 
-### Option A — automatic (recommended)
-
 1. On the PS5, open the browser and go to:  
    https://x-f1reball-x.github.io/SLOPKIT-PS5/
 2. Wait until the jailbreak finishes (**Jailbreak completed successfully**).
@@ -45,19 +43,9 @@ The app picks the chain automatically from the PS5 firmware in the browser user-
 5. **Reboot the PS5 once.**
 6. Open **PS5-WebKit-Autoloader v1** from the homescreen.
 
-### Option B — manual
-
-1. Jailbreak once (for example with SLOPKIT-PS5 above).
-2. Download `webkit-autoloader-installer_v1.elf` from  
-   https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader/releases/tag/v1
-3. Send that ELF with Payload Manager or elfldr (port **9021**).
-4. Leave the installer browser page open until caching finishes and the shortcut is created.
-5. **Reboot once.**
-6. Open **PS5-WebKit-Autoloader v1** from the homescreen.
-
 ### Updating
 
-After a new installer build (UI / icon / name changes), send the new `webkit-autoloader-installer_v1.elf` again, let it finish, then reboot once so the homescreen app and cache refresh.
+After a new installer build (UI / icon / name changes), run the jailbreak host again so it auto-sends the new installer, let it finish, then reboot once so the homescreen app and cache refresh.
 
 ## Build
 
