@@ -24,7 +24,7 @@ The app picks the chain automatically from the PS5 firmware in the browser user-
 ## UI features
 
 - Logo (WK) above the title
-- Title: **PS5-WebKit-Autoloader** with a small **v1** badge
+- Title: **PS5-WebKit-Autoloader** with a small badge
 - Live **firmware + chain** line (example: `FW 9.00 · chain poops`)
 - Status: **Jailbreak started**
 - Progress bar with live **%** and a soft blue glow
