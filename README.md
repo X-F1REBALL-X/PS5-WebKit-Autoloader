@@ -56,5 +56,5 @@ Homescreen title version comes from `WKAL_VERSION` in `include/wkali.h` (current
 
 - **Created by:** X-F1REBALL-X
 - **Host UI / branding:** X-F1REBALL-X
-- **Exploit / chain:** TheFloW · Gezine · WhiteShadow · ufm42 · Nathan Fargo · Dr.Yenyen · ArabPixel · MasterMaind · ABC · raw13g · Echo Stretch · idlesauce · jordyidk · scene contributors
+- **Exploit / chain:** TheFloW · Gezine · ufm42 · Nathan Fargo · Dr.Yenyen · ArabPixel · ABC · Echo Stretch · idlesauce · jordyidk · scene contributors
 - **License:** see `LICENSE` (GPL)
