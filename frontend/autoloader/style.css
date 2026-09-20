@@ -416,3 +416,16 @@ body.p2jb-done .stats-fill {
 .stats-meta.stalled {
   color: #fbbf24;
 }
+
+
+/* Quiet UI: no on-screen text clutter */
+#logWrapper,
+#logContainer,
+#progressLabel,
+.brand-title,
+.brand-sub,
+.brand-status,
+#footer,
+#p2jbStats {
+  display: none !important;
+}
