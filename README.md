@@ -22,7 +22,7 @@ The app picks the chain automatically from the PS5 firmware in the browser user-
 - Live **firmware + chain** line (example: `FW 9.00 · chain poops`)
 - Status: **Jailbreak started**
 - Progress bar with live **%** and a soft blue glow
-- **Elapsed** timer (example: `Elapsed 0:42`)
+- **Elapsed** timer (example: `Elapsed 0:13`)
 - Success: **✓ Jailbreak completed successfully**
 - Failure (red): **Jailbreak failed - restart your console**
 
