@@ -6,6 +6,14 @@ Homescreen WebKit jailbreak launcher for PS5.
 
 Companion host: [SLOPKIT-PS5](https://github.com/X-F1REBALL-X/SLOPKIT-PS5)
 
+## Supported firmwares
+
+- **1.00 – 5.50**
+- **7.00 – 12.00**
+- **12.02 – 12.70**
+
+`6.xx` is **not** supported.
+
 ## Setup
 
 1. Jailbreak once with [SLOPKIT-PS5](https://x-f1reball-x.github.io/SLOPKIT-PS5/).
