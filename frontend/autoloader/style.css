@@ -132,7 +132,7 @@ main[hidden] { display: none !important; }
 
 #progressContainer {
   width: min(420px, 78vw);
-  height: 10px;
+  height: 12px;
   margin-top: 18px;
   border-radius: 999px;
   background: rgba(42,159,255,0.18);
@@ -142,25 +142,45 @@ main[hidden] { display: none !important; }
   z-index: 2;
 }
 #progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
-  width: 0%;
+  width: 100%;
   background: #2a9fff;
   background: -webkit-linear-gradient(90deg, #1a7fd9 0%, #2a9fff 55%, #7ec8ff 100%);
   background: linear-gradient(90deg, #1a7fd9 0%, #2a9fff 55%, #7ec8ff 100%);
   -webkit-box-shadow: 0 0 14px rgba(42,159,255,0.55);
   box-shadow: 0 0 14px rgba(42,159,255,0.55);
-  -webkit-transition: width 0.25s ease-out;
-  transition: width 0.25s ease-out;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transform-origin: left center;
+  transform-origin: left center;
+  -webkit-transition: -webkit-transform 0.35s ease-out;
+  transition: transform 0.35s ease-out;
 }
 #progressLabel {
-  min-height: 1.2em;
+  display: none !important;
+}
+#successMsg {
+  display: none;
+  margin-top: 18px;
   color: #ffffff;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   letter-spacing: 0.04em;
-  text-shadow: 0 0 10px rgba(255,255,255,0.35);
+  text-shadow: 0 0 16px rgba(255,255,255,0.45);
   position: relative;
   z-index: 2;
+  text-align: center;
+  padding: 0 20px;
+}
+body.done #successMsg {
+  display: block;
+}
+body.done #progressBar {
+  -webkit-transform: scaleX(1) !important;
+  transform: scaleX(1) !important;
 }
 
 #logWrapper {
@@ -418,7 +438,7 @@ body.p2jb-done .stats-fill {
 }
 
 
-/* Quiet UI: no on-screen text clutter */
+/* Quiet UI: no on-screen text clutter (except success at 100%) */
 #logWrapper,
 #logContainer,
 #progressLabel,
