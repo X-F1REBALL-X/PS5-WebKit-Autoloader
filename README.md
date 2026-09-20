@@ -18,18 +18,13 @@ Homescreen WebKit jailbreak launcher for PS5.
 
 The app picks the chain automatically from the PS5 firmware in the browser user-agent. This project is **not** slopkit-only — it bundles umtx2, slopkit/poops, and p2jb.
 
-## UI features
-
-- Logo above the title
-- Title: **PS5-WebKit-Autoloader** with a small **v1** badge
+## UI feature
 - Live **firmware + chain** line (example: `FW 9.00 · chain poops`)
 - Status: **Jailbreak started**
 - Progress bar with live **%** and a soft blue glow
 - **Elapsed** timer (example: `Elapsed 0:42`)
-- Success: large **✓ Jailbreak completed successfully**
+- Success: **✓ Jailbreak completed successfully**
 - Failure (red): **Jailbreak failed - restart your console**
-- Footer: **Created by X-F1REBALL-X**
-- Custom PlayStation-symbols background
 
 ## Setup
 
