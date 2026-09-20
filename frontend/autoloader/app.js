@@ -79,6 +79,7 @@
     var entry = document.createElement('div');
     entry.className = 'line ' + type;
     entry.textContent = message;
+    if (!logContainer) return;
     logContainer.appendChild(entry);
     while (logContainer.childElementCount > MAX_LOG_LINES) {
       logContainer.removeChild(logContainer.firstChild);
@@ -90,7 +91,7 @@
   function updateProgress(percent, message) {
     progressBar.style.transform = 'scaleX(' + percent / 100 + ')';
     if (message) {
-      progressLabel.textContent = message;
+      if (progressLabel) progressLabel.textContent = message;
       uiLog(message, 'info');
     }
   }
