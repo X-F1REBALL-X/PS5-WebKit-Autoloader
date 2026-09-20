@@ -100,7 +100,7 @@ def build_banner():
             "   ┌" + "─" * width + "┐",
             row("PS5-WEBKIT-AUTOLOADER"),
             row(f"INSTALLER-HOST v{VERSION}"),
-            row(f"by PLK (built {BUILD_TIME})"),
+            row(f"by X-F1REBALL-X (built {BUILD_TIME})"),
             "   └" + "─" * width + "┘",
         ]
     )
@@ -116,7 +116,7 @@ def build_credits():
             "",
             "   ┌" + "─" * width + "┐",
             row("THIS PROJECT IS FREE & OPEN SOURCE"),
-            row("github.com/itsPLK/ps5-webkit-autoloader"),
+            row("github.com/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader"),
             "   └" + "─" * width + "┘",
         ]
     )
@@ -145,8 +145,8 @@ class UpdateChecker:
     screen. All failures are silent — the notice is best-effort only.
     """
 
-    API_URL = "https://api.github.com/repos/itsPLK/ps5-webkit-autoloader/releases/latest"
-    RELEASES_URL = "https://github.com/itsPLK/ps5-webkit-autoloader/releases"
+    API_URL = "https://api.github.com/repos/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader/releases/latest"
+    RELEASES_URL = "https://github.com/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader/releases"
     USER_AGENT = "ps5-webkit-autoloader-host"
     TIMEOUT = 3
 

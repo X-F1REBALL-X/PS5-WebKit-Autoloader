@@ -452,12 +452,12 @@ body.p2jb-done .stats-fill {
 
 #titleMsg {
   margin: 0 0 10px;
-  color: #2a9fff;
+  color: #ffffff;
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  text-shadow: 0 0 18px rgba(42,159,255,0.5);
+  text-shadow: 0 0 16px rgba(255,255,255,0.45);
   position: relative;
   z-index: 2;
   text-align: center;
