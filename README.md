@@ -135,3 +135,7 @@ This project is licensed under the GPL-3.0 License.
 
 ## Donate
 - [donate to PLK](DONATE.md)
+
+## Version
+
+Homescreen app title: **SLOPKIT WebKit v1** (`WKAL_VERSION` in `include/wkali.h`). Build with `BUILD_TYPE=stable` for a clean `v1` label (no `-dev-…` suffix).
