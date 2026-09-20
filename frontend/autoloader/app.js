@@ -80,9 +80,9 @@
      AppCache manifest lists these exact URLs so the console can serve them
      offline (AppCache matches URLs including the query string). */
   var POOPS_URL =
-    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&payload=1&autoload=payload.elf&v=final';
+    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&autoload=payload.elf&v=final';
   var P2JB_URL =
-    'slopkit/slopkit/p2jb.html?go=1&auto=1&production=1&payload=1&autoload=payload.elf&v=final';
+    'slopkit/slopkit/p2jb.html?go=1&auto=1&production=1&log=debug&payload=1&autoload=payload.elf&v=final';
 
   var EXPLOIT_URL = '';
   var exploitMode = null;
