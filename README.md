@@ -2,8 +2,6 @@
 
 Homescreen WebKit jailbreak launcher for PS5.
 
-**Created by X-F1REBALL-X**
-
 - **Repo:** [X-F1REBALL-X/PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader)
 - **Release:** [v1](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader/releases/tag/v1)
 - **Homescreen app title:** PS5-WebKit-Autoloader v1
