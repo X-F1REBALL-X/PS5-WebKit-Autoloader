@@ -88,12 +88,60 @@
     return entry;
   }
 
+  var progressPct = 0;
+  var progressDone = false;
+  var progressTimer = 0;
+
   function updateProgress(percent, message) {
-    progressBar.style.transform = 'scaleX(' + percent / 100 + ')';
+    percent = Math.max(0, Math.min(100, percent | 0));
+    if (!progressDone && percent < progressPct && percent !== 0) {
+      /* never go backwards while running */
+    } else {
+      progressPct = percent;
+    }
+    if (progressBar) {
+      progressBar.style.webkitTransform = 'scaleX(' + (progressPct / 100) + ')';
+      progressBar.style.transform = 'scaleX(' + (progressPct / 100) + ')';
+    }
     if (message) {
       if (progressLabel) progressLabel.textContent = message;
       uiLog(message, 'info');
     }
+    if (progressPct >= 100) {
+      progressDone = true;
+      try { document.body.className = 'done'; } catch (e) {}
+    }
+  }
+
+  function bumpProgressFloor(floor) {
+    if (progressDone) return;
+    if (floor > progressPct) updateProgress(floor);
+  }
+
+  /* Soft fill while the exploit runs so the bar never looks stuck. */
+  function startProgressDriver() {
+    if (progressTimer) return;
+    progressTimer = setInterval(function () {
+      if (progressDone) {
+        clearInterval(progressTimer);
+        progressTimer = 0;
+        return;
+      }
+      if (progressPct >= 92) return;
+      var next = progressPct + Math.max(0.35, (92 - progressPct) * 0.035);
+      if (next > 92) next = 92;
+      updateProgress(Math.floor(next));
+    }, 400);
+  }
+
+  function finishProgressSuccess(message) {
+    progressDone = true;
+    if (progressTimer) {
+      clearInterval(progressTimer);
+      progressTimer = 0;
+    }
+    updateProgress(100, message || 'Jailbreak completed successfully');
+    try { document.body.className = 'done'; } catch (e) {}
   }
 
   window.uiLog = uiLog;
@@ -161,7 +209,7 @@
     collapseP2jbStats();
     if (data.ok) {
       uiLog('Payload loaded (' + data.bytes + ' bytes sent to elfldr).', 'success');
-      updateProgress(100, 'Autoload finished.');
+      finishProgressSuccess('Jailbreak completed successfully');
 
       /* Payload is running as its own process now — unload the iframe to
          free the memory it held and avoid a browser OOM dialog.
@@ -279,6 +327,13 @@
       if (/^>/.test(line) || /^\[\+\]/.test(line)
         || /^(STAGE[0-5]|ALLPROC-CHECK|ALIASES-REPAIRED|POOPS-COMPLETE|POOPS-VERDICT|LATCH-HELD|LATCH-READ|OFFSETS-READY|WEBKIT-BASE|MODULE-BASES|SOCKETS|SPAWN|WAKEGATE)/.test(line)) {
         uiLog('[log] ' + line, 'info');
+        startProgressDriver();
+        if (/^STAGE0|^POOPS-COMPLETE/.test(line)) bumpProgressFloor(20);
+        else if (/^STAGE1/.test(line)) bumpProgressFloor(35);
+        else if (/^STAGE2/.test(line)) bumpProgressFloor(50);
+        else if (/^STAGE3/.test(line)) bumpProgressFloor(65);
+        else if (/^STAGE4/.test(line)) bumpProgressFloor(78);
+        else if (/^STAGE5|^SPAWN|^POOPS-VERDICT/.test(line)) bumpProgressFloor(90);
       } else if (/FAIL|ERROR|REFUSED|REBOOT|failed|panic|exception/i.test(line)
         || /^\[-\]/.test(line)) {
         uiLog('[log] ' + line, 'error');
@@ -289,11 +344,30 @@
     if (stage && stage.textContent !== lastStageText) {
       lastStageText = stage.textContent;
       lastStageCls = stage.className || '';
-      progressLabel.textContent = lastStageText;
-      if (lastStageCls.indexOf('bad') !== -1) {
+      if (progressLabel) progressLabel.textContent = lastStageText;
+      startProgressDriver();
+      var st = lastStageText || '';
+      if (/fail|reboot|error|refus|unlucky/i.test(st) || lastStageCls.indexOf('bad') !== -1) {
         uiLog('[stage] ' + lastStageText, 'error');
-      } else if (lastStageCls.indexOf('ok') !== -1) {
+      } else if (/success|completed|elf loader ready|elfldr/i.test(st)
+        || lastStageCls.indexOf('ok') !== -1) {
         uiLog('[stage] ' + lastStageText, 'success');
+        bumpProgressFloor(95);
+      } else if (/stage\s*5|ps10|payload/i.test(st)) {
+        bumpProgressFloor(80);
+        uiLog('[stage] ' + lastStageText, 'info');
+      } else if (/stage\s*4|ps9/i.test(st)) {
+        bumpProgressFloor(65);
+        uiLog('[stage] ' + lastStageText, 'info');
+      } else if (/stage\s*3|ps8/i.test(st)) {
+        bumpProgressFloor(50);
+        uiLog('[stage] ' + lastStageText, 'info');
+      } else if (/stage\s*[12]|ps[56]/i.test(st)) {
+        bumpProgressFloor(35);
+        uiLog('[stage] ' + lastStageText, 'info');
+      } else if (/stage\s*0|prepare|preflight|validate/i.test(st)) {
+        bumpProgressFloor(15);
+        uiLog('[stage] ' + lastStageText, 'info');
       } else {
         uiLog('[stage] ' + lastStageText, 'info');
       }
@@ -757,7 +831,7 @@
          autoload flow owns the UI from this point on. */
       if (!p2jbComplete && p2jbLastStageText.indexOf('ELF LOADER READY') !== -1) {
         p2jbComplete = true;
-        progressBar.style.transform = 'scaleX(1)';
+        bumpProgressFloor(95);
         uiLog('[p2jb] exploit complete — elfldr ready.', 'success');
         /* Pin the panel green at 100% until the autoload result lands, then
            onAutoloadResult collapses back to the classic full-height log.
@@ -823,6 +897,7 @@
   function start() {
     uiLog('SLOPKIT WebKit Autoloader by X-F1REBALL-X', 'success');
     updateProgress(0, 'Waiting to start...');
+    startProgressDriver();
 
     window.addEventListener('message', function (event) {
       var data = event.data;
