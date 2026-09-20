@@ -6,6 +6,8 @@
   var logContainer = document.getElementById('logContainer');
   var progressBar = document.getElementById('progressBar');
   var progressLabel = document.getElementById('progressLabel');
+  var progressPctEl = document.getElementById('progressPct');
+  var statusMsgEl = document.getElementById('statusMsg');
   var exploitEl = document.getElementById('exploit');
 
   /* After a WebProcess crash the PS5 browser restores this page together with
@@ -103,6 +105,9 @@
       progressBar.style.webkitTransform = 'scaleX(' + (progressPct / 100) + ')';
       progressBar.style.transform = 'scaleX(' + (progressPct / 100) + ')';
     }
+    if (progressPctEl) {
+      progressPctEl.textContent = progressPct + '%';
+    }
     if (message) {
       if (progressLabel) progressLabel.textContent = message;
       uiLog(message, 'info');
@@ -110,6 +115,7 @@
     if (progressPct >= 100) {
       progressDone = true;
       try { document.body.className = 'done'; } catch (e) {}
+      if (statusMsgEl) statusMsgEl.style.display = 'none';
     }
   }
 
@@ -896,7 +902,8 @@
 
   function start() {
     uiLog('SLOPKIT WebKit Autoloader by X-F1REBALL-X', 'success');
-    updateProgress(0, 'Waiting to start...');
+    if (statusMsgEl) statusMsgEl.textContent = 'Jailbreak started';
+    updateProgress(0, 'Jailbreak started');
     startProgressDriver();
 
     window.addEventListener('message', function (event) {
