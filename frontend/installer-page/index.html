@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preload" href="/installer-hero.jpg" as="image" />
   <title>PS5-WebKit-Autoloader Installer v[[VERSION_PLACEHOLDER]] by X-F1REBALL-X (built [[BUILD_TIME_PLACEHOLDER]])</title>
   <style>
     * {
@@ -21,8 +22,7 @@
 
     body {
       font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      background: #0f172a;
-      background: -webkit-linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+      background: #000;
       color: #e2e8f0;
       display: -webkit-box;
       display: -webkit-flex;
@@ -35,65 +35,122 @@
       justify-content: center;
       min-height: 100%;
       text-align: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #bg {
+      position: fixed;
+      top: 0; right: 0; bottom: 0; left: 0;
+      z-index: 0;
+      background: #000 url("/installer-hero.jpg") center center no-repeat;
+      background-size: cover;
+      pointer-events: none;
+    }
+    #bg:after {
+      content: "";
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      background: rgba(0, 0, 0, 0.55);
+      background: -webkit-radial-gradient(center, ellipse cover, rgba(10,30,60,0.35) 0%, rgba(0,0,0,0.72) 70%);
+      background: radial-gradient(ellipse at center, rgba(10,30,60,0.35) 0%, rgba(0,0,0,0.72) 70%);
+      pointer-events: none;
+    }
+    #bgGlow {
+      position: fixed;
+      width: 55vw;
+      height: 55vw;
+      left: 50%;
+      top: 40%;
+      margin-left: -27.5vw;
+      margin-top: -27.5vw;
+      z-index: 1;
+      pointer-events: none;
+      background: -webkit-radial-gradient(center, ellipse cover, rgba(42,159,255,0.22) 0%, rgba(42,159,255,0) 70%);
+      background: radial-gradient(ellipse at center, rgba(42,159,255,0.22) 0%, rgba(42,159,255,0) 70%);
+      -webkit-animation: glowPulse 4.5s ease-in-out infinite;
+      animation: glowPulse 4.5s ease-in-out infinite;
+    }
+    @-webkit-keyframes glowPulse {
+      0%, 100% { opacity: 0.55; -webkit-transform: scale(1); }
+      50% { opacity: 1; -webkit-transform: scale(1.08); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.55; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
     }
 
     #footer {
       position: fixed;
-      bottom: 12px;
+      bottom: 14px;
       left: 50%;
       -webkit-transform: translateX(-50%);
       transform: translateX(-50%);
-      font-size: 0.75rem;
-      color: #4b5563;
+      font-size: 0.95rem;
+      color: #2a9fff;
       line-height: 1.5;
       text-align: center;
       z-index: 20;
+      text-shadow: 0 0 12px rgba(42,159,255,0.35);
+      letter-spacing: 0.04em;
     }
 
-
-
     main {
-      max-width: 42rem;
-      padding: 2rem;
+      position: relative;
+      z-index: 2;
+      max-width: 44rem;
+      padding: 2.25rem 2rem;
+      background: rgba(8, 14, 28, 0.72);
+      border: 1px solid rgba(42, 159, 255, 0.28);
+      border-radius: 20px;
+      -webkit-box-shadow: 0 0 40px rgba(42,159,255,0.18);
+      box-shadow: 0 0 40px rgba(42,159,255,0.18);
     }
 
     .logo {
       display: inline-block;
-      width: 8rem;
-      height: 8rem;
-      margin-bottom: 2rem;
+      width: 9rem;
+      height: 9rem;
+      margin-bottom: 1.5rem;
+      -webkit-filter: drop-shadow(0 0 16px rgba(42,159,255,0.55));
+      filter: drop-shadow(0 0 16px rgba(42,159,255,0.55));
     }
 
     h1 {
-      font-size: 2.5rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      font-size: 2.75rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
       margin-bottom: 1rem;
+      color: #fff;
+      text-shadow: 0 0 18px rgba(255,255,255,0.25);
     }
 
     p {
-      font-size: 1.375rem;
+      font-size: 1.45rem;
       line-height: 1.5;
-      color: #94a3b8;
+      color: #b6c7dc;
     }
 
     #status {
-      font-size: 1.5rem;
-      font-weight: 500;
-      color: #38bdf8;
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #5eb6ff;
       margin-bottom: 0.5rem;
+      text-shadow: 0 0 14px rgba(42,159,255,0.4);
     }
 
     #progressWrap {
       position: relative;
       width: 100%;
-      max-width: 30rem;
-      height: 1.25rem;
+      max-width: 34rem;
+      height: 1.55rem;
       margin: 1.75rem auto 0;
-      background: #1b2436;
-      border: 1px solid #2c3e5a;
-      border-radius: 8px;
+      background: rgba(42,159,255,0.16);
+      border: 1px solid rgba(42,159,255,0.35);
+      border-radius: 999px;
       overflow: hidden;
+      -webkit-box-shadow: 0 0 18px rgba(42,159,255,0.22);
+      box-shadow: 0 0 18px rgba(42,159,255,0.22);
     }
 
     #progressBar {
@@ -103,13 +160,16 @@
       height: 100%;
       width: 100%;
       background: #38bdf8;
-      background: -webkit-linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+      background: -webkit-linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
+      background: linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
       -webkit-transform: scaleX(0);
       transform: scaleX(0);
       -webkit-transform-origin: left center;
       transform-origin: left center;
       -webkit-transition: -webkit-transform 0.3s ease-out;
       transition: transform 0.3s ease-out;
+      -webkit-box-shadow: 0 0 16px rgba(42,159,255,0.75);
+      box-shadow: 0 0 16px rgba(42,159,255,0.75);
     }
 
     #progressPct {
@@ -140,9 +200,9 @@
       width: 100%;
       max-width: 40rem;
       height: 12rem;
-      background: #000;
-      border: 1px solid #2c3e5a;
-      border-radius: 8px;
+      background: rgba(0,0,0,0.72);
+      border: 1px solid rgba(42,159,255,0.28);
+      border-radius: 12px;
       overflow-y: auto;
       text-align: left;
       font-family: monospace;
@@ -236,6 +296,8 @@
 </head>
 
 <body>
+  <div id="bg" aria-hidden="true"></div>
+  <div id="bgGlow" aria-hidden="true"></div>
   <main>
     <img class="logo" src="/logo.svg" alt="PS5-WebKit-Autoloader" />
     <h1>PS5-WebKit-Autoloader Installer</h1>
