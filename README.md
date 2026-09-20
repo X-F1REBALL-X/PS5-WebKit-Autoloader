@@ -4,7 +4,7 @@ Homescreen WebKit jailbreak launcher for PS5.
 
 **Created by X-F1REBALL-X**
 
-Homescreen app title: **SLOPKIT WebKit v1**
+Homescreen app title: **PS5 WebKit Autoloader v1**
 
 Companion host: [SLOPKIT-PS5](https://github.com/X-F1REBALL-X/SLOPKIT-PS5)
 
@@ -25,7 +25,7 @@ The app picks the chain automatically from the PS5 firmware in the browser user-
 1. Jailbreak once with [SLOPKIT-PS5](https://x-f1reball-x.github.io/SLOPKIT-PS5/).
 2. Send `webkit-autoloader-installer_v1.elf` from [Releases](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader/releases/tag/v1) (or let SLOPKIT-PS5 auto-send it).
 3. Reboot once.
-4. Open **SLOPKIT WebKit v1** from the homescreen.
+4. Open **PS5 WebKit Autoloader v1** from the homescreen.
 
 ## Build
 
