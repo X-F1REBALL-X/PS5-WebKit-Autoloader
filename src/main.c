@@ -89,7 +89,7 @@ int main(void) {
         sleep(1);
     }
 
-    wkali_log("[WKALI] WebKit Autoloader Installer v%s by PLK (built %s) starting on port %d...\n",
+    wkali_log("[WKALI] WebKit Autoloader Installer v%s by X-F1REBALL-X (built %s) starting on port %d...\n",
                    WKAL_FULL_VERSION, WKAL_BUILD_TIME, WKALI_PORT);
 
     /* Initialize PS5 System Services */

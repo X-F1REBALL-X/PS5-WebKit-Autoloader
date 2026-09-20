@@ -193,7 +193,7 @@ re-run the script, and regenerate `patches/umtx2-autoload.patch` if it no longer
 
 Both slopkit chains boot the **shared** elfldr, served at `/app/<version>/shared/elfldr-ps5.elf`
 (staged from `frontend/autoloader/shared/`). `tools/download_deps.sh` fetches it from the pinned
-`itsPLK/ps5-elfldr` release (tag `ELFLDR_TAG`), sha256-verifies it, and caches the digest in a
+ps5-elfldr release (tag `ELFLDR_TAG`), sha256-verifies it, and caches the digest in a
 `.sha256` sidecar so offline rebuilds work. umtx2 (FW 1.00–5.50) boots its **own** elfldr from
 the umtx2 submodule instead, matching stock umtx2 behavior.
 
