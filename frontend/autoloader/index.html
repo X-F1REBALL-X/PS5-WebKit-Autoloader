@@ -1,37 +1,35 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <title>SLOPKIT WebKit Autoloader v[[VERSION_PLACEHOLDER]] by X-F1REBALL-X (built [[BUILD_TIME_PLACEHOLDER]])</title>
+  <link rel="preload" href="ps5-hero.jpg" as="image" />
+  <title>SLOPKIT — PS5 jailbreak</title>
 </head>
-
 <body>
+  <div id="bg" aria-hidden="true"></div>
+
   <div id="splash" aria-hidden="false">
-    <img class="logo" src="logo.svg" alt="SLOPKIT" />
-    <h1>SLOPKIT</h1>
-    <p class="sub">PS5 jailbreak</p>
+    <p class="brand-title">SLOPKIT</p>
+    <p class="brand-sub">PS5 jailbreak</p>
+    <p class="brand-status">Starting...</p>
   </div>
 
   <iframe id="exploit" title="exploit" hidden></iframe>
 
-
   <main id="loader" hidden>
+    <p class="brand-title">SLOPKIT</p>
+    <p class="brand-sub">PS5 jailbreak</p>
+    <div id="progressContainer">
+      <div id="progressBar"></div>
+    </div>
+    <div id="progressLabel">Jailbreak in progress</div>
     <div id="logWrapper">
       <div id="logContainer"></div>
     </div>
 
-    <div id="progressContainer">
-      <div id="progressBar"></div>
-      <div id="progressLabel">Loading...</div>
-    </div>
-
-    <!-- p2jb live statistics, mirrored from the exploit's #livestat readout
-         by app.js. Hidden until the first real phase starts; styled in
-         style.css (#p2jbStats / body.p2jb-stats). -->
     <div id="p2jbStats" hidden>
       <div class="stats-head">
         <span class="stats-title">P2JB</span>
@@ -56,9 +54,7 @@
     </div>
   </main>
 
-  <footer id="footer">SLOPKIT WebKit Autoloader v[[VERSION_PLACEHOLDER]] by X-F1REBALL-X (built [[BUILD_TIME_PLACEHOLDER]])<br />This project is free and open source: github.com/X-F1REBALL-X/SLOPKIT-WebKit-Autoloader</footer>
-
+  <footer id="footer"><b>Created by X-F1REBALL-X</b></footer>
   <script src="app.js"></script>
 </body>
-
 </html>
