@@ -4,7 +4,6 @@ Homescreen WebKit jailbreak launcher for PS5.
 
 - **Repo:** [X-F1REBALL-X/PS5-WebKit-Autoloader](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader)
 - **Release:** [v1](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader/releases/tag/v1)
-- **Homescreen app title:** PS5-WebKit-Autoloader v1
 - **Companion host:** [SLOPKIT-PS5](https://github.com/X-F1REBALL-X/SLOPKIT-PS5) · live: https://x-f1reball-x.github.io/SLOPKIT-PS5/
 
 ## Supported firmwares
