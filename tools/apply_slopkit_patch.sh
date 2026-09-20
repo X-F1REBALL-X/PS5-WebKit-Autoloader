@@ -102,3 +102,20 @@ if [ -f "$HERO_SRC" ] && [ -d "$DEST/slopkit" ]; then
   sed -i 's|url("ps-logo.jpg")|url("ps5-hero.jpg")|g' "$DEST/slopkit/p2jb.html" 2>/dev/null || true
   echo "slopkit: applied SLOPKIT hero background"
 fi
+
+# 5. Overlay public research/userland offset profiles (13.xx) from the parent
+#    repo. The slopkit submodule stays pristine; these live under
+#    third_party/public-offsets/ and are copied into the regenerated frontend
+#    tree so the host can serve them. Presence of these files does NOT enable
+#    a full jailbreak — Autoloader UI treats 13.x as userland-only.
+PUBLIC_OFFSETS="$ROOT/third_party/public-offsets/13.xx"
+if [ -d "$PUBLIC_OFFSETS" ]; then
+  mkdir -p "$DEST/offsets"
+  copied=0
+  for f in "$PUBLIC_OFFSETS"/*.js; do
+    [ -f "$f" ] || continue
+    cp -f "$f" "$DEST/offsets/$(basename "$f")"
+    copied=$((copied + 1))
+  done
+  echo "slopkit: overlaid $copied public 13.xx offset profile(s) into $DEST/offsets/"
+fi
