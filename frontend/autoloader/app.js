@@ -67,6 +67,11 @@
   var UMTX2_FIRMWARES = ["1.00", "1.01", "1.02", "1.05", "1.10", "1.11", "1.12", "1.13", "1.14", "2.00", "2.20", "2.25", "2.26", "2.30", "2.50", "2.70", "3.00", "3.10", "3.20", "3.21", "4.00", "4.02", "4.03", "4.50", "4.51", "5.00", "5.02", "5.10", "5.50"];
   var POOPS_FIRMWARES = ["7.00", "7.01", "7.20", "7.40", "7.60", "7.61", "8.00", "8.20", "8.40", "8.60", "9.00", "9.05", "9.20", "9.40", "9.60", "10.00", "10.01", "10.20", "10.40", "10.60", "11.00", "11.20", "11.40", "11.60", "12.00"];
   var P2JB_FIRMWARES = ["12.02", "12.20", "12.40", "12.60", "12.70"];
+  /* Public WebKit userland offset profiles exist for these firmwares
+     (see third_party/public-offsets/13.xx/), but there is NO public kernel
+     exploit / full JB chain. pickExploit returns 'research_ul' so the UI
+     refuses to auto-run umtx2/poops/p2jb. */
+  var RESEARCH_OR_USERLAND_FIRMWARES = ["13.00", "13.20", "13.40", "13.60"];
 
   var UMTX2_URL =
     'umtx2/index.html?autoload=payload.elf&v=1';
@@ -172,6 +177,10 @@
 
   function setMeta(fwStr, chain) {
     if (!metaMsgEl) return;
+    if (chain === 'research_ul' || chain === 'userland only') {
+      metaMsgEl.textContent = 'FW ' + (fwStr || '—') + ' · userland only';
+      return;
+    }
     metaMsgEl.textContent = 'FW ' + (fwStr || '—') + ' · chain ' + (chain || '—');
   }
 
@@ -216,7 +225,7 @@
   /* Choose which exploit to arm. Forced modes (build-time EXPLOIT_MODE or a
      ?force= query on this page) bypass the firmware table so a specific chain
      can be exercised on any firmware — the exploit page's own firmware guard
-     still applies. Returns 'umtx2' | 'poops' | 'p2jb' | null. */
+     still applies. Returns 'umtx2' | 'poops' | 'p2jb' | 'research_ul' | null. */
   function pickExploit() {
     var fw = detectFirmware();
     var forced = null;
@@ -240,9 +249,14 @@
     if (UMTX2_FIRMWARES.indexOf(fw.str) !== -1) return 'umtx2';
     if (POOPS_FIRMWARES.indexOf(fw.str) !== -1) return 'poops';
     if (P2JB_FIRMWARES.indexOf(fw.str) !== -1) return 'p2jb';
+    if (RESEARCH_OR_USERLAND_FIRMWARES.indexOf(fw.str) !== -1) return 'research_ul';
+    /* Any other 13.xx UA: still refuse full JB (no public kex), even if we
+       do not ship an exact offset profile for that minor version. */
+    if (fw.num >= 13.0 && fw.num < 14.0) return 'research_ul';
     uiLog('[ERROR] Unsupported firmware ' + fw.str +
-      ' (supported: 1.00-5.50 via umtx2, 7.00-12.00 via poops,'
-      + ' 12.02-12.70 via p2jb).', 'error');
+      ' (full JB: 1.00-5.50 umtx2, 7.00-12.00 poops, 12.02-12.70 p2jb;'
+      + ' 13.xx = userland offsets only, no public kernel exploit;'
+      + ' 6.xx unsupported).', 'error');
     return null;
   }
 
@@ -984,6 +998,22 @@
     if (!picked) {
       setMeta(fw ? fw.str : '—', 'unsupported');
       finishProgressFail('Jailbreak failed - restart your console');
+      return;
+    }
+    /* 13.xx: public WebKit offsets may exist, but no public kernel exploit.
+       Do NOT arm umtx2/poops/p2jb. Show an honest userland-only refusal. */
+    if (picked === 'research_ul') {
+      exploitMode = null;
+      setMeta(fw ? fw.str : '—', 'research_ul');
+      uiLog('[INFO] Firmware ' + (fw ? fw.str : '?')
+        + ': WebKit userland offsets are available for research,'
+        + ' but there is no public kernel exploit / full jailbreak'
+        + ' for 13.xx yet.', 'warning');
+      finishProgressFail(
+        'FW ' + (fw ? fw.str : '13.xx')
+        + ' — userland only (offsets present; no public kernel exploit).'
+        + ' Full JB not available.');
+      setTimeout(revealExploit, 800);
       return;
     }
     exploitMode = picked;
