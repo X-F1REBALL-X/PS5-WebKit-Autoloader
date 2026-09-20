@@ -35,7 +35,7 @@ body {
 
 .brand-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -46,7 +46,7 @@ body {
 }
 .brand-sub {
   margin: 8px 0 0;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.12em;
   color: #ffffff;
@@ -194,7 +194,7 @@ body.done #progressBar {
 }
 #logContainer {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.35;
   color: #9ad2ff;
   text-align: left;
@@ -450,9 +450,9 @@ body.p2jb-done .stats-fill {
 }
 
 #appLogo {
-  width: 72px;
-  height: 72px;
-  margin: 0 0 14px;
+  width: 96px;
+  height: 96px;
+  margin: 0 0 18px;
   position: relative;
   z-index: 2;
   -webkit-filter: drop-shadow(0 0 12px rgba(42,159,255,0.55));
@@ -462,7 +462,7 @@ body.p2jb-done .stats-fill {
 #titleMsg {
   margin: 0 0 8px;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -474,8 +474,8 @@ body.p2jb-done .stats-fill {
 #appVer {
   display: inline-block;
   margin-left: 8px;
-  padding: 2px 8px;
-  font-size: 12px;
+  padding: 3px 10px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #2a9fff;
@@ -489,7 +489,7 @@ body.p2jb-done .stats-fill {
 #metaMsg {
   margin: 0 0 14px;
   color: #9ad2ff;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.06em;
   position: relative;
@@ -501,7 +501,7 @@ body.p2jb-done .stats-fill {
 #statusMsg {
   margin: 0 0 8px;
   color: #ffffff;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-shadow: 0 0 12px rgba(255,255,255,0.4);
@@ -511,9 +511,9 @@ body.p2jb-done .stats-fill {
 }
 
 #progressContainer {
-  width: min(420px, 78vw);
-  height: 12px;
-  margin-top: 10px;
+  width: min(560px, 84vw);
+  height: 18px;
+  margin-top: 14px;
   border-radius: 999px;
   background: rgba(42,159,255,0.18);
   border: 1px solid rgba(42,159,255,0.35);
@@ -555,7 +555,7 @@ body.p2jb-done .stats-fill {
 #progressPct {
   margin-top: 10px;
   color: #2a9fff;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-shadow: 0 0 12px rgba(42,159,255,0.45);
@@ -567,7 +567,7 @@ body.p2jb-done .stats-fill {
 #elapsedMsg {
   margin-top: 6px;
   color: #7eb6e8;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.06em;
   position: relative;
@@ -579,7 +579,7 @@ body.p2jb-done .stats-fill {
   display: none;
   margin-top: 22px;
   color: #ffffff;
-  font-size: 26px;
+  font-size: 34px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-shadow: 0 0 20px rgba(255,255,255,0.5);
@@ -594,14 +594,14 @@ body.p2jb-done .stats-fill {
   margin-right: 8px;
   color: #47c76a;
   text-shadow: 0 0 14px rgba(71,199,106,0.7);
-  font-size: 28px;
+  font-size: 36px;
 }
 
 #failMsg {
   display: none;
   margin-top: 22px;
   color: #ff5a5a;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 800;
   letter-spacing: 0.03em;
   text-shadow: 0 0 16px rgba(255,90,90,0.45);
@@ -638,9 +638,9 @@ body.fail #progressPct { color: #ff5a5a; }
 
 #footer {
   position: fixed;
-  left: 0; right: 0; bottom: 10px;
+  left: 0; right: 0; bottom: 12px;
   text-align: center;
-  font-size: 12px;
+  font-size: 16px;
   color: #2a9fff;
   letter-spacing: 0.08em;
   pointer-events: none;
