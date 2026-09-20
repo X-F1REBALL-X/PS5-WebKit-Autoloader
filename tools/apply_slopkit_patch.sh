@@ -92,3 +92,13 @@ fi
 echo "slopkit: patch verification OK (autoload block + probe-path autoload,"
 echo "         exactQuery relaxation, hidden payload.elf tile, shared elfldr"
 echo "         on poops + p2jb)."
+
+
+# SLOPKIT branding: hero background (after patch; uses ROOT/DEST from above)
+HERO_SRC="$ROOT/frontend/autoloader/ps5-hero.jpg"
+if [ -f "$HERO_SRC" ] && [ -d "$DEST/slopkit" ]; then
+  cp -f "$HERO_SRC" "$DEST/slopkit/ps5-hero.jpg"
+  sed -i 's|url("ps-logo.jpg")|url("ps5-hero.jpg")|g' "$DEST/slopkit/poops.html" 2>/dev/null || true
+  sed -i 's|url("ps-logo.jpg")|url("ps5-hero.jpg")|g' "$DEST/slopkit/p2jb.html" 2>/dev/null || true
+  echo "slopkit: applied SLOPKIT hero background"
+fi
