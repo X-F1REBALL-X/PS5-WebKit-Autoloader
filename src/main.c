@@ -159,7 +159,7 @@ int main(void) {
     if (wkali_app_is_up_to_date()) {
         wkali_log("[WKALI] App already up to date (v%s) — skipping install.\n",
                   WKAL_FULL_VERSION);
-        wkali_notify("WebKit Autoloader v%s already up to date", WKAL_FULL_VERSION);
+        wkali_notify("WK Autoloader already up to date");
         return 0;
     }
 
@@ -246,7 +246,7 @@ int main(void) {
     }
 
     if (atomic_load(&install_completed)) {
-        wkali_notify("PS5-WebKit-Autoloader v%s cached successfully!", WKAL_FULL_VERSION);
+        wkali_notify("WK Autoloader cached successfully!");
         /* Brief pause so the success UI can paint, then go Home — closes browser. */
         usleep(800000);
         ps5_return_to_home();
