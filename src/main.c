@@ -82,28 +82,47 @@ static void wait_for_elf_sender(void) {
     struct pollfd pfd;
     char drain[512];
     int flags;
+    int waited_ms = 0;
+    const int max_ms = 30000;
 
-    pfd.fd = STDIN_FILENO;
-    pfd.events = POLLIN;
-    for (;;) {
-        int rc = poll(&pfd, 1, 8000);
-        if (rc < 0 && errno == EINTR)
-            continue;
-        break;
-    }
-
+    /* Must wait for real EOF (sender closed). A non-blocking read that
+     * returns EAGAIN means the socket is still open — keep waiting.
+     * The old loop treated EAGAIN like EOF and opened the browser while
+     * SLOPKIT was still inside sendPayloadToElfldr (console crash). */
     flags = fcntl(STDIN_FILENO, F_GETFL, 0);
     if (flags != -1)
         fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
+
     for (;;) {
+        pfd.fd = STDIN_FILENO;
+        pfd.events = POLLIN | POLLHUP | POLLERR;
+        int rc = poll(&pfd, 1, 500);
+        if (rc < 0) {
+            if (errno == EINTR)
+                continue;
+            break;
+        }
+
         ssize_t n = read(STDIN_FILENO, drain, sizeof(drain));
+        if (n > 0)
+            continue;
+        if (n == 0)
+            break; /* EOF — sender closed */
+
         if (n < 0 && errno == EINTR)
             continue;
-        if (n <= 0)
-            break;
+        if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+            if (pfd.revents & (POLLHUP | POLLERR | POLLNVAL))
+                break;
+            waited_ms += 500;
+            if (waited_ms >= max_ms)
+                break;
+            continue;
+        }
+        break;
     }
 
-    sleep(3);
+    sleep(5);
 }
 
 /* PS5 System Calls (Internal) */
