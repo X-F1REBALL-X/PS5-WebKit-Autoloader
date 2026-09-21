@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" manifest="/cache.appcache">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,761 +7,468 @@
   <link rel="preload" href="/installer-hero.jpg" as="image" />
   <title>PS5-WebKit-Autoloader Installer v[[VERSION_PLACEHOLDER]] by X-F1REBALL-X (built [[BUILD_TIME_PLACEHOLDER]])</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-
-    html,
+    * { margin: 0; padding: 0; -webkit-box-sizing: border-box; box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      height: 100%;
-    }
-
-    body {
-      font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       background: #000;
-      color: #e2e8f0;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
+      color: #ffffff;
       min-height: 100%;
+      overflow: hidden;
       text-align: center;
-      position: relative;
-      overflow-x: hidden;
     }
-
     #bg {
-      position: fixed;
-      top: 0; right: 0; bottom: 0; left: 0;
-      z-index: 0;
+      position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 0;
       background: #000 url("/installer-hero.jpg") center center no-repeat;
       background-size: cover;
       pointer-events: none;
     }
     #bg:after {
       content: "";
-      position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
-      background: rgba(0, 0, 0, 0.55);
-      background: -webkit-radial-gradient(center, ellipse cover, rgba(10,30,60,0.35) 0%, rgba(0,0,0,0.72) 70%);
-      background: radial-gradient(ellipse at center, rgba(10,30,60,0.35) 0%, rgba(0,0,0,0.72) 70%);
+      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+      background: rgba(0,0,0,0.38);
       pointer-events: none;
     }
-    #bgGlow {
-      position: fixed;
-      width: 55vw;
-      height: 55vw;
-      left: 50%;
-      top: 40%;
-      margin-left: -27.5vw;
-      margin-top: -27.5vw;
-      z-index: 1;
-      pointer-events: none;
-      background: -webkit-radial-gradient(center, ellipse cover, rgba(42,159,255,0.22) 0%, rgba(42,159,255,0) 70%);
-      background: radial-gradient(ellipse at center, rgba(42,159,255,0.22) 0%, rgba(42,159,255,0) 70%);
-      -webkit-animation: glowPulse 4.5s ease-in-out infinite;
-      animation: glowPulse 4.5s ease-in-out infinite;
-    }
-    @-webkit-keyframes glowPulse {
-      0%, 100% { opacity: 0.55; -webkit-transform: scale(1); }
-      50% { opacity: 1; -webkit-transform: scale(1.08); }
-    }
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.55; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.08); }
-    }
-
-    #footer {
-      position: fixed;
-      bottom: 14px;
-      left: 50%;
-      -webkit-transform: translateX(-50%);
-      transform: translateX(-50%);
-      font-size: 0.95rem;
-      color: #2a9fff;
-      line-height: 1.5;
-      text-align: center;
-      z-index: 20;
-      text-shadow: 0 0 12px rgba(42,159,255,0.35);
-      letter-spacing: 0.04em;
-    }
-
     main {
-      position: relative;
-      z-index: 2;
-      max-width: 44rem;
-      padding: 2.25rem 2rem;
-      background: rgba(8, 14, 28, 0.72);
-      border: 1px solid rgba(42, 159, 255, 0.28);
-      border-radius: 20px;
-      -webkit-box-shadow: 0 0 40px rgba(42,159,255,0.18);
-      box-shadow: 0 0 40px rgba(42,159,255,0.18);
+      position: relative; z-index: 2;
+      height: 100%;
+      display: -webkit-box; display: -webkit-flex; display: flex;
+      -webkit-box-orient: vertical; -webkit-box-direction: normal;
+      -webkit-flex-direction: column; flex-direction: column;
+      -webkit-box-align: center; -webkit-align-items: center; align-items: center;
+      -webkit-box-pack: start; -webkit-justify-content: flex-start; justify-content: flex-start;
+      gap: 10px;
+      padding: 26vh 20px 80px;
+      background: transparent;
+      box-sizing: border-box;
     }
-
-    .logo {
-      display: inline-block;
-      width: 9rem;
-      height: 9rem;
-      margin-bottom: 1.5rem;
-      -webkit-filter: drop-shadow(0 0 16px rgba(42,159,255,0.55));
-      filter: drop-shadow(0 0 16px rgba(42,159,255,0.55));
-    }
-
-    h1 {
-      font-size: 2.75rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      margin-bottom: 1rem;
-      color: #fff;
-      text-shadow: 0 0 18px rgba(255,255,255,0.25);
-    }
-
-    p {
-      font-size: 1.45rem;
-      line-height: 1.5;
-      color: #b6c7dc;
-    }
-
     #status {
-      font-size: 1.7rem;
-      font-weight: 600;
-      color: #5eb6ff;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 14px rgba(42,159,255,0.4);
-    }
-
-    #progressWrap {
-      position: relative;
-      width: 100%;
-      max-width: 34rem;
-      height: 1.55rem;
-      margin: 1.75rem auto 0;
-      background: rgba(42,159,255,0.16);
-      border: 1px solid rgba(42,159,255,0.35);
-      border-radius: 999px;
-      overflow: hidden;
-      -webkit-box-shadow: 0 0 18px rgba(42,159,255,0.22);
-      box-shadow: 0 0 18px rgba(42,159,255,0.22);
-    }
-
-    #progressBar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: #38bdf8;
-      background: -webkit-linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
-      background: linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
-      -webkit-transform: scaleX(0);
-      transform: scaleX(0);
-      -webkit-transform-origin: left center;
-      transform-origin: left center;
-      -webkit-transition: -webkit-transform 0.3s ease-out;
-      transition: transform 0.3s ease-out;
-      -webkit-box-shadow: 0 0 16px rgba(42,159,255,0.75);
-      box-shadow: 0 0 16px rgba(42,159,255,0.75);
-    }
-
-    #progressPct {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    #logPanel {
-      margin-top: 1.25rem;
-      width: 100%;
-      max-width: 40rem;
-      text-align: left;
-      border-radius: 14px;
-      border: 1px solid rgba(42,159,255,0.32);
-      background: rgba(4, 10, 22, 0.82);
-      -webkit-box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 24px rgba(42,159,255,0.12);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 24px rgba(42,159,255,0.12);
-      overflow: hidden;
-    }
-    #logPanel[hidden] { display: none !important; }
-    #logPanel .log-head {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      -webkit-box-pack: justify;
-      -webkit-justify-content: space-between;
-      justify-content: space-between;
-      padding: 0.55rem 0.85rem;
-      border-bottom: 1px solid rgba(250,204,21,0.28);
-      background: rgba(18, 40, 72, 0.55);
-      color: #fbbf24;
-      font-size: 0.85rem;
+      margin: 0 0 8px;
+      color: #ffffff;
+      font-size: 18px;
       font-weight: 700;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 12px rgba(255,255,255,0.4);
+    }
+    #detail { display: none !important; }
+    #progressWrap {
+      width: min(420px, 78vw);
+      height: 14px;
+      margin-top: 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      overflow: hidden;
+      position: relative;
+      -webkit-box-shadow: 0 0 18px rgba(255,255,255,0.12);
+      box-shadow: 0 0 18px rgba(255,255,255,0.12);
+    }
+    #progressWrap[hidden] { display: none !important; }
+    #progressBar {
+      position: absolute; top: 0; left: 0;
+      height: 100%; width: 100%;
+      background: #ffffff;
+      background: -webkit-linear-gradient(90deg, #e8e8e8 0%, #ffffff 50%, #f5f5f5 100%);
+      background: linear-gradient(90deg, #e8e8e8 0%, #ffffff 50%, #f5f5f5 100%);
+      -webkit-box-shadow: 0 0 14px rgba(255,255,255,0.45);
+      box-shadow: 0 0 14px rgba(255,255,255,0.45);
+      -webkit-transform: scaleX(0); transform: scaleX(0);
+      -webkit-transform-origin: left center; transform-origin: left center;
+      -webkit-transition: -webkit-transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
+    }
+    #progressPct {
+      margin-top: 10px;
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 800;
       letter-spacing: 0.06em;
-      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(255,255,255,0.45);
     }
-    #logPanel .log-head .dot {
-      width: 0.45rem;
-      height: 0.45rem;
-      border-radius: 50%;
-      background: #22c55e;
-      -webkit-box-shadow: 0 0 8px rgba(34,197,94,0.8);
-      box-shadow: 0 0 8px rgba(34,197,94,0.8);
-      margin-right: 0.45rem;
-      display: inline-block;
+    #elapsedMsg {
+      margin-top: 6px;
+      color: #e5e5e5;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 8px rgba(255,255,255,0.2);
     }
-    #logPanel.error .log-head .dot {
-      background: #ef4444;
-      -webkit-box-shadow: 0 0 8px rgba(239,68,68,0.85);
-      box-shadow: 0 0 8px rgba(239,68,68,0.85);
+    #successMsg {
+      display: none;
+      margin-top: 10px;
+      color: #22c55e;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 16px rgba(34,197,94,0.45);
     }
-    #logPanel.error .log-head { color: #fca5a5; border-bottom-color: rgba(239,68,68,0.35); }
-    #logContainer {
-      height: 11rem;
-      overflow-y: auto;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.78rem;
-      line-height: 1.45;
-      padding: 0.65rem 0.85rem 0.85rem;
-      color: #facc15;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      text-align: left;
+    #failMsg {
+      display: none;
+      margin-top: 12px;
+      color: #ef4444;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 14px rgba(239,68,68,0.55);
+      padding: 0 20px;
     }
-    #logContainer .log-line {
-      margin: 0 0 0.2rem;
-      padding-left: 0.55rem;
-      border-left: 2px solid rgba(250,204,21,0.55);
-      color: #fde047;
+    body.done #status { display: none !important; }
+    body.done #successMsg { display: block; }
+    body.done #progressPct { color: #86efac; }
+    body.done #elapsedMsg { color: #86efac; }
+    body.done #progressBar {
+      -webkit-transform: scaleX(1) !important;
+      transform: scaleX(1) !important;
+      background: linear-gradient(90deg, #15803d, #16a34a, #22c55e, #86efac) !important;
+      box-shadow: 0 0 14px rgba(34,197,94,0.55) !important;
     }
-    #logPanel.error #logContainer .log-line {
-      border-left-color: rgba(239,68,68,0.55);
-      color: #fecaca;
+    body.fail #status { display: none !important; }
+    body.fail #failMsg { display: block; }
+    body.fail #progressPct { color: #fca5a5; }
+    body.fail #elapsedMsg { color: #fca5a5; }
+    body.fail #progressBar {
+      background: linear-gradient(90deg, #991b1b, #ef4444, #fca5a5) !important;
+      box-shadow: 0 0 14px rgba(239,68,68,0.55) !important;
     }
-
+    #footer {
+      position: fixed; left: 0; right: 0; bottom: 12px;
+      text-align: center;
+      font-size: 16px;
+      color: #ffffff;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      line-height: 1.5;
+      text-shadow: 0 0 12px rgba(255,255,255,0.35);
+      z-index: 20;
+    }
+    #footer b { color: #ffffff; font-weight: 600; }
+    #logPanel, .logo, h1, #bgGlow { display: none !important; }
     #cacheCorruptOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(2, 6, 23, 0.85);
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      z-index: 100;
+      position: fixed; inset: 0; z-index: 50;
+      display: -webkit-box; display: -webkit-flex; display: flex;
+      -webkit-box-align: center; -webkit-align-items: center; align-items: center;
+      -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center;
+      background: rgba(0,0,0,0.72);
+      padding: 24px;
     }
-
     #cacheCorruptOverlay .card {
-      background: #1b2436;
-      border: 1px solid #2c3e5a;
-      border-radius: 12px;
-      max-width: 34rem;
-      padding: 2rem;
+      max-width: 420px; width: 100%;
+      padding: 22px 18px;
+      border-radius: 14px;
+      background: rgba(8,12,20,0.92);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
       text-align: center;
     }
-
-    #cacheCorruptOverlay h2 {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #fbbf24;
-      margin-bottom: 1rem;
-    }
-
-    #cacheCorruptOverlay p {
-      font-size: 1.125rem;
-      line-height: 1.6;
-      color: #cbd5e1;
-      margin-bottom: 1.5rem;
-    }
-
-    #cacheCorruptOverlay .actions {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    #cacheCorruptOverlay .actions[hidden] {
-      display: none !important;
-    }
-
+    #cacheCorruptOverlay h2 { font-size: 18px; margin-bottom: 10px; }
+    #cacheCorruptOverlay p { font-size: 14px; color: #e5e5e5; line-height: 1.4; margin-bottom: 14px; }
+    #cacheCorruptOverlay .actions { display: block; }
     #cacheCorruptOverlay .btn {
-      font-size: 1.125rem;
-      font-weight: 600;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
+      display: inline-block; margin: 6px;
+      padding: 10px 14px; border: 0; border-radius: 8px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
     }
-
-    #cacheCorruptOverlay .btn.primary {
-      background: #2563eb;
-      background: -webkit-linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
-      color: #fff;
-    }
-
-    #cacheCorruptOverlay .btn.secondary {
-      background: #334155;
-      color: #e2e8f0;
-    }
+    #cacheCorruptOverlay .btn.primary { background: #2a9fff; color: #fff; }
+    #cacheCorruptOverlay .btn.secondary { background: #334155; color: #e2e8f0; }
   </style>
-
 </head>
-
 <body>
   <div id="bg" aria-hidden="true"></div>
-  <div id="bgGlow" aria-hidden="true"></div>
   <main>
-    <img class="logo" src="/logo.svg" alt="PS5-WebKit-Autoloader" />
-    <h1>PS5-WebKit-Autoloader Installer</h1>
-    <p id="status">Loading&hellip;</p>
+    <p id="status">Updating version…</p>
     <p id="detail"></p>
-
-    <div id="progressWrap" hidden>
+    <div id="progressWrap">
       <div id="progressBar"></div>
-      <div id="progressPct">0%</div>
     </div>
-    <div id="logPanel" hidden>
-      <div class="log-head"><span><span class="dot"></span>Log</span></div>
-      <div id="logContainer"></div>
-    </div>
-
+    <div id="progressPct">0%</div>
+    <div id="elapsedMsg">Elapsed 0:00</div>
+    <div id="successMsg">Updated successfully</div>
+    <div id="failMsg">Update failed - run the installer again</div>
   </main>
-
-  <footer id="footer">PS5-WebKit-Autoloader Installer v[[VERSION_PLACEHOLDER]] · Created by X-F1REBALL-X</footer>
-
+  <div id="logPanel" hidden><div id="logContainer"></div></div>
+  <footer id="footer"><b>Created by X-F1REBALL-X</b></footer>
   <script>
+  (function () {
+    'use strict';
+    var statusEl = document.getElementById('status');
+    var detailEl = document.getElementById('detail');
+    var progressWrap = document.getElementById('progressWrap');
+    var progressBar = document.getElementById('progressBar');
+    var progressPct = document.getElementById('progressPct');
+    var elapsedMsg = document.getElementById('elapsedMsg');
+    var completed = false;
+    var isDownloading = false;
+    var isRetry = false;
+    var currentUid = '';
+    var simulateCorrupt = false;
+    var corruptionPromptShown = false;
+    var probeOk = false;
+    var logPos = 0;
+    var t0 = Date.now();
+    var AUTOLOADER_URL = '/app/index.html';
+
     (function () {
-      'use strict';
-
-      var statusEl = document.getElementById('status');
-      var detailEl = document.getElementById('detail');
-      var progressWrap = document.getElementById('progressWrap');
-      var progressBar = document.getElementById('progressBar');
-      var progressPct = document.getElementById('progressPct');
-      var completed = false;
-      var isDownloading = false;
-      var isRetry = false;
-      var currentUid = '';
-      var simulateCorrupt = false;
-      var corruptionPromptShown = false;
-
-      (function () {
-        var params = new URLSearchParams(window.location.search);
-        isRetry = params.get('retry') === '1';
-        currentUid = params.get('uid') || '';
-        /* Test hook: ?simulate=corrupt forces the corruption prompt without
-         * needing a real AppCache error (e.g. for quick UI testing in a
-         * desktop browser via `make dev`). */
-        simulateCorrupt = params.get('simulate') === 'corrupt';
-      })();
-
-      var logPanel = document.getElementById('logPanel');
-      var logContainer = document.getElementById('logContainer');
-      var seenLogs = "";
-
-      function friendlyLog(raw) {
-        var s = String(raw || '').replace(/^\s+|\s+$/g, '');
-        if (!s) return '';
-        /* Drop noisy HTTP file dumps */
-        if (/^\[HTTP\] Serving /.test(s)) return '';
-        if (/FORCE_EXPLOIT/.test(s)) return '';
-        if (/sysctl failed|malloc failed|kill failed/.test(s)) return '';
-        if (/Network Controller initialized|User Service initialized/.test(s)) return '';
-        if (/sceNetCtlInit failed|sceUserServiceInitialize failed/.test(s)) return '';
-        if (/ShellUIUtil|navigateToHome|userId=/.test(s)) return 'Closing...';
-        if (/Launching browser:/.test(s)) return 'Opening browser...';
-        if (/Installer v.*starting on port/.test(s)) return 'Starting installer...';
-        if (/Server running\. Waiting/.test(s)) return 'Waiting for cache...';
-        if (/App already up to date/.test(s)) return 'Already up to date.';
-        if (/App installed\. Stopping/.test(s)) return 'App installed.';
-        if (/App install failed/.test(s)) return 'Install failed.';
-        if (/Exit requested/.test(s)) return 'Closing...';
-        if (/WebKit data cleared successfully/.test(s)) return 'Browser data cleared.';
-        if (/WebKit data clear failed/.test(s)) return 'Could not clear browser data.';
-        if (/Re-launching browser after WebKit/.test(s)) return 'Restarting browser...';
-        if (/WebKit clear already attempted/.test(s)) return '';
-        if (/Updating existing app launcher/.test(s)) return 'Updating app...';
-        if (/Installing browser launcher app/.test(s)) return 'Installing app...';
-        if (/Launcher app installed successfully/.test(s)) return 'App ready.';
-        if (/Failed to start HTTP daemon/.test(s)) return 'Server error.';
-        if (/Cannot determine current user/.test(s)) return 'User error.';
-        if (/No webkit\/shell/.test(s)) return 'Nothing to clear.';
-        if (/Clearing /.test(s)) return 'Clearing browser data...';
-        if (/Cleared webkit\/shell/.test(s)) return 'Browser data cleared.';
-        if (/Errors clearing/.test(s)) return 'Clear failed.';
-        if (/Detected firmware.*umtx2/.test(s)) return 'Firmware: umtx2';
-        if (/Detected firmware.*poops/.test(s)) return 'Firmware: poops';
-        if (/Detected firmware.*p2jb/.test(s)) return 'Firmware: p2jb';
-        if (/sceAppInstUtilInitialize|Failed to create app dir|Failed to install|install_app: error/.test(s))
-          return 'Install error.';
-        /* Strip technical prefixes if nothing matched */
-        s = s.replace(/^\[WKALI\]\s*/, '').replace(/^\[Notify\]\s*/, '').replace(/^\[HTTP\]\s*/, '');
-        return s;
-      }
-
-      function appendLog(msg) {
-        var text = friendlyLog(msg);
-        if (!text) return;
-        if (logPanel) logPanel.hidden = false;
-        var div = document.createElement('div');
-        div.className = 'log-line';
-        div.textContent = text;
-        logContainer.appendChild(div);
-        logContainer.scrollTop = logContainer.scrollHeight;
-      }
-
-
-      var logPos = 0;
-      var logXhr = null;
-
-      function pollLogs() {
-        logXhr = new XMLHttpRequest();
-        logXhr.open('GET', '/logs?pos=' + logPos, true);
-        logXhr.onreadystatechange = function () {
-          if (logXhr.readyState === 4) {
-            if (logXhr.status === 200) {
-              var newLogs = logXhr.responseText;
-              if (newLogs.length > 0) {
-                var lines = newLogs.split('\\n');
-                for (var i = 0; i < lines.length; i++) {
-                  if (lines[i].trim() !== '') appendLog(lines[i]);
-                }
-              }
-              var newPosStr = logXhr.getResponseHeader("X-Log-Pos");
-              if (newPosStr) {
-                logPos = parseInt(newPosStr, 10);
-              }
-              // Add a slight delay before reconnecting to reduce server load
-              setTimeout(pollLogs, 100);
-            } else {
-              // Server is down or error
-              if (completed) return; // Stop polling completely if we finished
-              setTimeout(pollLogs, 1000);
-            }
-          }
-        };
-        logXhr.send();
-      }
-      // Start the long-polling loop
-      pollLogs();
-
-
-      var probeOk = false;
-
-
-      var AUTOLOADER_URL = '/app/index.html';
-
-      function setProgress(pct) {
-        progressBar.style.transform = 'scaleX(' + pct / 100 + ')';
-        progressPct.textContent = pct + '%';
-      }
-
-      function setInstalled() {
-        statusEl.textContent = 'Installed';
-        statusEl.style.color = '#22c55e';
-        progressBar.style.background = '-webkit-linear-gradient(90deg, #16a34a 0%, #22c55e 100%)';
-        detailEl.textContent = 'Closing...';
-        setProgress(100);
-      }
-
-      function setFailed() {
-        statusEl.textContent = 'Failed';
-        statusEl.style.color = '#ef4444';
-        progressBar.style.background = '-webkit-linear-gradient(90deg, #dc2626 0%, #ef4444 100%)';
-        detailEl.textContent = 'Close this page and run the installer again.';
-      }
-
-      function setSlow() {
-        statusEl.textContent = 'Still caching...';
-        detailEl.textContent = 'If this never finishes, close the browser and run again.';
-      }
-
-      function setCaching() {
-        statusEl.textContent = 'Caching...';
-        detailEl.textContent = 'Please wait. Do not close yet.';
-        progressWrap.hidden = false;
-      }
-
-      function goToAutoloader() {
-        window.location.replace(AUTOLOADER_URL);
-      }
-
-      function probeServer() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/version', true);
-        xhr.timeout = 1000;
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              var hdrUid = xhr.getResponseHeader("X-User-Id");
-              if (hdrUid) currentUid = hdrUid;
-              probeOk = true;
-              setCaching();
-            } else {
-              goToAutoloader();
-            }
-          }
-        };
-        xhr.onerror = function () {
-          goToAutoloader();
-        };
-        xhr.ontimeout = function () {
-          goToAutoloader();
-        };
-        xhr.send();
-      }
-
-      function installApp() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/install', true);
-        xhr.timeout = 30000;
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              setInstalled();
-              try { window.close(); } catch (e) {}
-            } else {
-              setFailed();
-            }
-          }
-        };
-        xhr.onerror = function () {
-          setFailed();
-        };
-        xhr.ontimeout = function () {
-          setFailed();
-        };
-        xhr.send();
-      }
-
-      function maybeInstall() {
-        if (completed) {
-          return;
-        }
-        completed = true;
-        installApp();
-      }
-
-      function setCacheCorrupted() {
-        if (corruptionPromptShown) {
-          return;
-        }
-        corruptionPromptShown = true;
-        completed = true;
-        progressWrap.hidden = true;
-        if (logPanel) logPanel.hidden = true;
-        statusEl.textContent = 'Cache failed';
-        detailEl.textContent = '';
-
-        var overlay = document.createElement('div');
-        overlay.id = 'cacheCorruptOverlay';
-
-        var card = document.createElement('div');
-        card.className = 'card';
-
-        var title = document.createElement('h2');
-        var msg = document.createElement('p');
-        var actions = null;
-
-        var webkitShellPath = '/user/home/' + (currentUid || '<userid>') + '/webkit/shell/';
-
-        if (isRetry) {
-          title.textContent = 'Cache issue persists';
-          msg.textContent = 'Clearing WebKit data from ' + webkitShellPath + ' didn\'t seem to fix the issue. You can close this page.';
-          var exitXhr = new XMLHttpRequest();
-          exitXhr.open('GET', '/exit', true);
-          exitXhr.send();
-        } else {
-          title.textContent = 'WebKit cache appears corrupted';
-          msg.textContent = 'Your PS5\'s WebKit browser data may be corrupted, preventing the cache from completing. Clearing it may fix the issue. ';
-          var strong = document.createElement('strong');
-          strong.textContent = 'This will remove all browser data in ' + webkitShellPath + ' (AppCache, cookies, local storage) for the current user.';
-          msg.appendChild(strong);
-
-          actions = document.createElement('div');
-          actions.className = 'actions';
-
-          var clearBtn = document.createElement('button');
-          clearBtn.className = 'btn primary';
-          clearBtn.textContent = 'Clear WebKit Data & Retry';
-          clearBtn.addEventListener('click', function () {
-            actions.hidden = true;
-            actions.style.display = 'none';
-            msg.textContent = 'Clearing data and restarting browser...';
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/clear-webkit-data', true);
-            xhr.timeout = 30000;
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status !== 200) {
-                msg.textContent = 'Failed to clear WebKit data';
-                actions.hidden = false;
-                actions.style.display = '';
-              }
-            };
-            xhr.onerror = function () {
-              msg.textContent = 'Failed to clear WebKit data';
-              actions.hidden = false;
-              actions.style.display = '';
-            };
-            xhr.ontimeout = function () {
-              msg.textContent = 'Failed to clear WebKit data';
-              actions.hidden = false;
-              actions.style.display = '';
-            };
-            xhr.send();
-          });
-          actions.appendChild(clearBtn);
-
-          var cancelBtn = document.createElement('button');
-          cancelBtn.className = 'btn secondary';
-          cancelBtn.textContent = 'Cancel';
-          cancelBtn.addEventListener('click', function () {
-            msg.textContent = 'You can close this page. Re-run the installer ELF to try again.';
-            actions.hidden = true;
-            actions.style.display = 'none';
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/exit', true);
-            xhr.send();
-          });
-          actions.appendChild(cancelBtn);
-        }
-
-        card.appendChild(title);
-        card.appendChild(msg);
-        if (actions) {
-          card.appendChild(actions);
-        }
-        overlay.appendChild(card);
-        document.body.appendChild(overlay);
-      }
-
-      window.addEventListener('load', function () {
-        /* Test hook: ?simulate=corrupt forces the corruption prompt as if an
-         * AppCache error fired during download, and skips the probe/install
-         * polling so the prompt stays up for UI testing (e.g. make dev). */
-        if (simulateCorrupt) {
-          isDownloading = true;
-          setCacheCorrupted();
-          return;
-        }
-
-        probeServer();
-
-        /* The shortcut is created only once the AppCache is current, so the
-           installer never installs a partial cache. /install then both installs
-           the homescreen app and stops the server. */
-        var waitTimer = setInterval(function () {
-          if (completed) {
-            clearInterval(waitTimer);
-            return;
-          }
-          if (!probeOk) {
-            clearInterval(waitTimer);
-            goToAutoloader();
-            return;
-          }
-          var st = window.applicationCache
-              ? window.applicationCache.status : -1;
-          if (st === -1 || st === window.applicationCache.IDLE) {
-            clearInterval(waitTimer);
-            maybeInstall();
-          }
-        }, 1000);
-
-        /* Safety cap — never leave the installer hanging on screen. It does NOT
-           install or exit: a partial cache must never create a shortcut, so the
-           user simply re-runs the installer if this never completes. */
-        setTimeout(function () {
-          if (!completed && probeOk) {
-            setSlow();
-          }
-        }, 120000);
-      });
-
-
-      if (window.applicationCache) {
-        window.applicationCache.addEventListener('checking', function () {
-          progressWrap.hidden = false;
-          appendLog("Checking cache...");
-        });
-        window.applicationCache.addEventListener('downloading', function () {
-          isDownloading = true;
-          appendLog("Downloading...");
-        });
-        window.applicationCache.addEventListener('progress', function (e) {
-          if (e.url) appendLog("Fetching...");
-          if (e.total && e.total > 0) {
-            var pct = Math.min(99, Math.round((e.loaded / e.total) * 100));
-            setProgress(pct);
-          }
-        });
-        window.applicationCache.addEventListener('error', function (e) {
-          appendLog("Cache error.");
-          if (logPanel) logPanel.className = 'error';
-          if (isDownloading) {
-            setCacheCorrupted();
-          }
-        });
-        window.applicationCache.addEventListener('obsolete', function (e) {
-          appendLog("Cache outdated.");
-        });
-        window.applicationCache.addEventListener('cached', function() {
-          isDownloading = false;
-          appendLog("Cache done.");
-          maybeInstall();
-        });
-        window.applicationCache.addEventListener('noupdate', function() {
-          isDownloading = false;
-          appendLog("Cache ready.");
-          maybeInstall();
-        });
-        window.applicationCache.addEventListener('updateready', function () {
-          isDownloading = false;
-          if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-            window.applicationCache.swapCache();
-            window.location.reload();
-          }
-        });
-      }
+      var params = new URLSearchParams(window.location.search);
+      isRetry = params.get('retry') === '1';
+      currentUid = params.get('uid') || '';
+      simulateCorrupt = params.get('simulate') === 'corrupt';
     })();
+
+    function formatElapsed(ms) {
+      var s = Math.floor(ms / 1000);
+      var m = Math.floor(s / 60);
+      s = s % 60;
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+    setInterval(function () {
+      if (elapsedMsg && !completed) {
+        elapsedMsg.textContent = 'Elapsed ' + formatElapsed(Date.now() - t0);
+      }
+    }, 250);
+
+    function setProgress(pct) {
+      if (pct < 0) pct = 0;
+      if (pct > 100) pct = 100;
+      progressBar.style.webkitTransform = 'scaleX(' + (pct / 100) + ')';
+      progressBar.style.transform = 'scaleX(' + (pct / 100) + ')';
+      progressPct.textContent = Math.floor(pct) + '%';
+    }
+
+    function setInstalled() {
+      completed = true;
+      try { document.body.className = 'done'; } catch (e) {}
+      statusEl.textContent = 'Updated successfully';
+      setProgress(100);
+      if (elapsedMsg) elapsedMsg.textContent = 'Elapsed ' + formatElapsed(Date.now() - t0);
+    }
+
+    function setFailed() {
+      completed = true;
+      try { document.body.className = 'fail'; } catch (e) {}
+      statusEl.textContent = 'Update failed - run the installer again';
+      progressBar.style.webkitTransform = 'scaleX(1)';
+      progressBar.style.transform = 'scaleX(1)';
+      setProgress(100);
+    }
+
+    function setCaching() {
+      statusEl.textContent = 'Updating version…';
+      progressWrap.hidden = false;
+    }
+
+    function goToAutoloader() {
+      window.location.replace(AUTOLOADER_URL);
+    }
+
+    function friendlyLog(raw) {
+      var s = String(raw || '').replace(/^\s+|\s+$/g, '');
+      if (!s) return '';
+      if (/^\[HTTP\] Serving /.test(s)) return '';
+      if (/FORCE_EXPLOIT|sysctl failed|malloc failed|kill failed/.test(s)) return '';
+      if (/Network Controller initialized|User Service initialized/.test(s)) return '';
+      if (/sceNetCtlInit failed|sceUserServiceInitialize failed/.test(s)) return '';
+      if (/Updating existing app launcher|Installing browser launcher app/.test(s)) {
+        statusEl.textContent = 'Updating version…';
+      }
+      if (/App already up to date|Launcher app installed successfully|App installed/.test(s)) {
+        statusEl.textContent = 'Updating version…';
+      }
+      if (/App install failed|Install error|Failed to install/.test(s)) {
+        setFailed();
+      }
+      return '';
+    }
+
+    function appendLog(msg) { friendlyLog(msg); }
+
+    function pollLogs() {
+      var logXhr = new XMLHttpRequest();
+      logXhr.open('GET', '/logs?pos=' + logPos, true);
+      logXhr.onreadystatechange = function () {
+        if (logXhr.readyState === 4) {
+          if (logXhr.status === 200) {
+            var newLogs = logXhr.responseText;
+            if (newLogs.length > 0) {
+              var lines = newLogs.split('\n');
+              for (var i = 0; i < lines.length; i++) {
+                if (lines[i].trim() !== '') appendLog(lines[i]);
+              }
+            }
+            var newPosStr = logXhr.getResponseHeader('X-Log-Pos');
+            if (newPosStr) logPos = parseInt(newPosStr, 10);
+            setTimeout(pollLogs, 100);
+          } else {
+            if (completed) return;
+            setTimeout(pollLogs, 1000);
+          }
+        }
+      };
+      logXhr.send();
+    }
+    pollLogs();
+
+    function probeServer() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/version', true);
+      xhr.timeout = 1000;
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var hdrUid = xhr.getResponseHeader('X-User-Id');
+            if (hdrUid) currentUid = hdrUid;
+            probeOk = true;
+            setCaching();
+          } else {
+            goToAutoloader();
+          }
+        }
+      };
+      xhr.onerror = xhr.ontimeout = function () { goToAutoloader(); };
+      xhr.send();
+    }
+
+    function installApp() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/install', true);
+      xhr.timeout = 30000;
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            setInstalled();
+            try { window.close(); } catch (e) {}
+          } else {
+            setFailed();
+          }
+        }
+      };
+      xhr.onerror = xhr.ontimeout = function () { setFailed(); };
+      xhr.send();
+    }
+
+    function maybeInstall() {
+      if (completed) return;
+      completed = true;
+      installApp();
+    }
+
+    function setCacheCorrupted() {
+      if (corruptionPromptShown) return;
+      corruptionPromptShown = true;
+      completed = true;
+      progressWrap.hidden = true;
+      statusEl.textContent = 'Cache failed';
+      var overlay = document.createElement('div');
+      overlay.id = 'cacheCorruptOverlay';
+      var card = document.createElement('div');
+      card.className = 'card';
+      var title = document.createElement('h2');
+      var msg = document.createElement('p');
+      var actions = null;
+      var webkitShellPath = '/user/home/' + (currentUid || '<userid>') + '/webkit/shell/';
+      if (isRetry) {
+        title.textContent = 'Cache issue persists';
+        msg.textContent = 'Clearing WebKit data did not fix it. You can close this page.';
+        var exitXhr = new XMLHttpRequest();
+        exitXhr.open('GET', '/exit', true);
+        exitXhr.send();
+      } else {
+        title.textContent = 'WebKit cache appears corrupted';
+        msg.textContent = 'Clearing browser data may fix this. ';
+        var strong = document.createElement('strong');
+        strong.textContent = 'This removes browser data in ' + webkitShellPath + '.';
+        msg.appendChild(strong);
+        actions = document.createElement('div');
+        actions.className = 'actions';
+        var clearBtn = document.createElement('button');
+        clearBtn.className = 'btn primary';
+        clearBtn.textContent = 'Clear & Retry';
+        clearBtn.addEventListener('click', function () {
+          actions.hidden = true;
+          msg.textContent = 'Clearing data and restarting browser...';
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/clear-webkit-data', true);
+          xhr.timeout = 30000;
+          xhr.send();
+        });
+        actions.appendChild(clearBtn);
+        var cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn secondary';
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.addEventListener('click', function () {
+          msg.textContent = 'Close this page and run the installer again.';
+          actions.hidden = true;
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '/exit', true);
+          xhr.send();
+        });
+        actions.appendChild(cancelBtn);
+      }
+      card.appendChild(title);
+      card.appendChild(msg);
+      if (actions) card.appendChild(actions);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+    }
+
+    window.addEventListener('load', function () {
+      if (simulateCorrupt) {
+        isDownloading = true;
+        setCacheCorrupted();
+        return;
+      }
+      setCaching();
+      setProgress(2);
+      probeServer();
+
+      var soft = 2;
+      var softTimer = setInterval(function () {
+        if (completed) { clearInterval(softTimer); return; }
+        if (soft < 90) {
+          soft += Math.max(0.4, (90 - soft) * 0.04);
+          setProgress(soft);
+        }
+      }, 300);
+
+      var waitTimer = setInterval(function () {
+        if (completed) { clearInterval(waitTimer); return; }
+        if (!probeOk) {
+          clearInterval(waitTimer);
+          goToAutoloader();
+          return;
+        }
+        if (typeof applicationCache === 'undefined') {
+          clearInterval(waitTimer);
+          maybeInstall();
+          return;
+        }
+        var st = applicationCache.status;
+        if (st === applicationCache.IDLE || st === applicationCache.UPDATEREADY) {
+          clearInterval(waitTimer);
+          maybeInstall();
+        }
+      }, 400);
+
+      if (typeof applicationCache !== 'undefined') {
+        applicationCache.addEventListener('progress', function (e) {
+          isDownloading = true;
+          if (e && e.lengthComputable && e.total > 0) {
+            setProgress(Math.min(92, 8 + (e.loaded / e.total) * 84));
+          }
+        }, false);
+        applicationCache.addEventListener('cached', function () { maybeInstall(); }, false);
+        applicationCache.addEventListener('updateready', function () { maybeInstall(); }, false);
+        applicationCache.addEventListener('noupdate', function () { maybeInstall(); }, false);
+        applicationCache.addEventListener('error', function () {
+          if (isDownloading) setCacheCorrupted();
+        }, false);
+        applicationCache.addEventListener('obsolete', function () { setCacheCorrupted(); }, false);
+      }
+
+      setTimeout(function () {
+        if (!completed && probeOk) maybeInstall();
+      }, 45000);
+    });
+  })();
   </script>
 </body>
-
 </html>
