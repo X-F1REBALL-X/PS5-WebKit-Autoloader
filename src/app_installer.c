@@ -30,8 +30,9 @@
 
 INCASSET(param_json, "assets/param.json");
 INCASSET(icon0_png, "assets/icon0.png");
-/* pic0 = selected-app homescreen background; also installed as pic1. */
+/* pic0 = selected-app homescreen background (PNG + DDS). */
 INCASSET(pic0_png, "assets/pic0.png");
+INCASSET(pic0_dds, "assets/pic0.dds");
 
 int sceAppInstUtilInitialize(void);
 int sceAppInstUtilTerminate(void);
@@ -143,13 +144,19 @@ int wkali_app_is_up_to_date(void) {
            title_id);
   snprintf(icon_path, sizeof(icon_path), "/user/app/%s/sce_sys/icon0.png",
            title_id);
+  char pic0_dds_path[256];
+  char appmeta_pic0_dds[256];
   snprintf(pic0_path, sizeof(pic0_path), "/user/app/%s/sce_sys/pic0.png",
            title_id);
   snprintf(pic1_path, sizeof(pic1_path), "/user/app/%s/sce_sys/pic1.png",
            title_id);
-  /* Homescreen focus art is read from appmeta as pic0. */
+  snprintf(pic0_dds_path, sizeof(pic0_dds_path),
+           "/user/app/%s/sce_sys/pic0.dds", title_id);
+  /* Homescreen focus art is read from appmeta (prefer DDS). */
   snprintf(appmeta_pic0, sizeof(appmeta_pic0), "/user/appmeta/%s/pic0.png",
            title_id);
+  snprintf(appmeta_pic0_dds, sizeof(appmeta_pic0_dds),
+           "/user/appmeta/%s/pic0.dds", title_id);
 
   if (stat(base_dir, &st) != 0)
     return 0;
@@ -161,7 +168,11 @@ int wkali_app_is_up_to_date(void) {
     return 0;
   if (needs_update(pic1_path, pic0_png, pic0_png_size))
     return 0;
+  if (needs_update(pic0_dds_path, pic0_dds, pic0_dds_size))
+    return 0;
   if (needs_update(appmeta_pic0, pic0_png, pic0_png_size))
+    return 0;
+  if (needs_update(appmeta_pic0_dds, pic0_dds, pic0_dds_size))
     return 0;
   return 1;
 }
@@ -192,6 +203,14 @@ static void mirror_appmeta(const char *title_id) {
   snprintf(path, sizeof(path), "/user/appmeta/%s/pic1.png", title_id);
   if (install_file(path, pic0_png, pic0_png_size))
     wkali_log("[WKALI] appmeta pic1.png failed\n");
+
+  snprintf(path, sizeof(path), "/user/appmeta/%s/pic0.dds", title_id);
+  if (install_file(path, pic0_dds, pic0_dds_size))
+    wkali_log("[WKALI] appmeta pic0.dds failed\n");
+
+  snprintf(path, sizeof(path), "/user/appmeta/%s/pic1.dds", title_id);
+  if (install_file(path, pic0_dds, pic0_dds_size))
+    wkali_log("[WKALI] appmeta pic1.dds failed\n");
 }
 
 int wkali_install_app_if_needed(void) {
@@ -269,6 +288,21 @@ int wkali_install_app_if_needed(void) {
     wkali_log("[WKALI] Failed to install pic1.png\n");
     sceAppInstUtilTerminate();
     return -1;
+  }
+
+  {
+    char pic0_dds_path[256];
+    char pic1_dds_path[256];
+    snprintf(pic0_dds_path, sizeof(pic0_dds_path),
+             "/user/app/%s/sce_sys/pic0.dds", title_id);
+    snprintf(pic1_dds_path, sizeof(pic1_dds_path),
+             "/user/app/%s/sce_sys/pic1.dds", title_id);
+    if (install_file(pic0_dds_path, pic0_dds, pic0_dds_size) ||
+        install_file(pic1_dds_path, pic0_dds, pic0_dds_size)) {
+      wkali_log("[WKALI] Failed to install pic0/pic1.dds\n");
+      sceAppInstUtilTerminate();
+      return -1;
+    }
   }
 
   mirror_appmeta(title_id);
