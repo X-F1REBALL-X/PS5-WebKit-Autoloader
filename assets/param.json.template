@@ -1,29 +1,6 @@
 {
     "titleId": "SLKT00001",
-    "contentId": "SL0000-SLKT00001_00-WKALIAUTOLOADER1",
-    "contentVersion": "01.071.000",
-    "masterVersion": "01.00",
-    "applicationCategoryType": 0,
-    "contentBadgeType": 1,
-    "applicationDrmType": "free",
-    "attribute": 0,
-    "attribute2": 0,
-    "attribute3": 0,
-    "ageLevel": {
-        "default": 0
-    },
-    "backgroundBasematType": "Linear",
-    "downloadDataSize": 256,
-    "requiredSystemSoftwareVersion": "0x0000000000000000",
-    "sdkVersion": "0x0000000000000000",
-    "versionFileUri": "",
-    "gameIntent": {
-        "permittedIntents": [
-            {
-                "intentType": "launchActivity"
-            }
-        ]
-    },
+    "applicationCategoryType": 65536,
     "deeplinkUri": "http://127.0.0.1:18181/app/index.html",
     "localizedParameters": {
         "defaultLanguage": "en-US",
