@@ -174,6 +174,9 @@ int main(void) {
 
     if (atomic_load(&install_completed)) {
         wkali_notify("PS5-WebKit-Autoloader v%s cached successfully!", WKAL_FULL_VERSION);
+        /* Brief pause so the success UI can paint, then go Home — closes browser. */
+        usleep(800000);
+        ps5_return_to_home();
     }
     wkali_log_wakeup();
 
