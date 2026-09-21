@@ -7,16 +7,16 @@ Version scheme (mirrors the ps5-bdjb-autoloader project):
     stable:       <base>
     pre-release:  <base>-pre-<suffix>
 
-    e.g. 0.0.1-dev-abc1234           clean tree, dev build
-         0.0.1-dev-20260806123500    dirty tree — timestamp instead of hash
-         0.0.1-pre-abc1234           clean tree, pre-release build
-         0.0.1                       stable build — no hash/timestamp suffix
+    e.g. 0.2.3-dev-abc1234           clean tree, dev build
+         0.2.3-dev-20260806123500    dirty tree — timestamp instead of hash
+         0.2.3-pre-abc1234           clean tree, pre-release build
+         0.2.3                       stable build — no hash/timestamp suffix
 
 The base version comes from WKAL_VERSION in include/wkali.h. BUILD_TYPE is
 taken from the BUILD_TYPE environment variable (default: dev).
 
 When CUSTOM_VERSION is set, it is appended to the base version and takes
-precedence over the build type (e.g. CUSTOM_VERSION=umtx2-test -> 0.0.1-umtx2-test).
+precedence over the build type (e.g. CUSTOM_VERSION=umtx2-test -> 0.2.3-umtx2-test).
 The custom suffix is also shown in the PS5 homescreen app title.
 
 Usage:
