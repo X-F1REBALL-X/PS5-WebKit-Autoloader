@@ -80,7 +80,7 @@
      AppCache manifest lists these exact URLs so the console can serve them
      offline (AppCache matches URLs including the query string). */
   var POOPS_URL =
-    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&payload=1&autoload=payload.elf&v=final';
+    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=12&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&payload=1&autoload=payload.elf&v=final';
   var P2JB_URL =
     'slopkit/slopkit/p2jb.html?go=1&auto=1&production=1&payload=1&autoload=payload.elf&v=final';
 
@@ -230,11 +230,13 @@
       progressTimer = 0;
     }
     try { document.body.className = 'fail'; } catch (e) {}
+    var msg = message || 'Jailbreak failed - restart your console';
     if (failMsgEl) {
-      failMsgEl.textContent = message || 'Jailbreak failed - restart your console';
+      failMsgEl.textContent = msg;
     }
     if (statusMsgEl) statusMsgEl.style.display = 'none';
-    uiLog(message || 'Jailbreak failed - restart your console', 'error');
+    if (progressLabel) progressLabel.style.display = 'none';
+    uiLog(msg, 'error');
   }
 
   window.uiLog = uiLog;
@@ -322,7 +324,7 @@
       }
     } else {
       uiLog('[ERROR] Autoload failed: ' + (data.why || 'unknown error'), 'error');
-      finishProgressFail('Jailbreak failed - restart your console');
+      finishProgressFail('Jailbreak failed - close browser and try again');
     }
     setTimeout(function () {
       if (data.ok) {
@@ -448,11 +450,18 @@
       if (progressLabel) progressLabel.textContent = lastStageText;
       startProgressDriver();
       var st = lastStageText || '';
-      if (/fail|reboot|error|refus|unlucky/i.test(st) || lastStageCls.indexOf('bad') !== -1) {
+      /* Only end the outer UI on *final* fail text — not mid-run words like
+         "refused", "error", or "unlucky" while retries are still going. */
+      var finalFail = /jailbreak failed|reboot required|you need to reboot|unlucky|close browser and try again|^FAILED\b/i.test(st)
+        || (lastStageCls.indexOf('bad') !== -1 && /fail|reboot|unlucky/i.test(st));
+      if (finalFail) {
         uiLog('[stage] ' + lastStageText, 'error');
         if (!finished) {
           finished = true;
-          finishProgressFail('Jailbreak failed - restart your console');
+          var retry = /try again|close browser|FAILED\b/i.test(st) && !/reboot required|need to reboot|restart your console/i.test(st);
+          finishProgressFail(retry
+            ? 'Jailbreak failed - close browser and try again'
+            : 'Jailbreak failed - restart your console');
         }
       } else if (/loading payload manager|loading webkit|autoloading /i.test(st)) {
         /* Post-JB ELF sends — keep UI alive, do not freeze at 94/95. */
