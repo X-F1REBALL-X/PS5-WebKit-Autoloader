@@ -9,7 +9,10 @@
  * This file handles: process init, signal setup, MHD lifecycle, shutdown.
  */
 
+#include <errno.h>
+#include <fcntl.h>
 #include <microhttpd.h>
+#include <poll.h>
 #include <signal.h>
 #include <stdatomic.h>
 #include <stdint.h>
@@ -67,6 +70,42 @@ static pid_t find_pid(const char *name) {
     return pid;
 }
 
+/* elfldr reads the whole ELF, then detaches this process while the sender
+ * socket is still open. stdio is that socket. SLOPKIT is still inside
+ * sendPayloadToElfldr (last write or close). Opening the browser in that
+ * window kills the jailbreak page and the console crashes.
+ *
+ * Called only when the homescreen app does not already match this build.
+ * A version bump changes param.json, so an update takes that path. Wait
+ * for the sender to hang up, then give the page time to leave its syscall. */
+static void wait_for_elf_sender(void) {
+    struct pollfd pfd;
+    char drain[512];
+    int flags;
+
+    pfd.fd = STDIN_FILENO;
+    pfd.events = POLLIN;
+    for (;;) {
+        int rc = poll(&pfd, 1, 8000);
+        if (rc < 0 && errno == EINTR)
+            continue;
+        break;
+    }
+
+    flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+    if (flags != -1)
+        fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
+    for (;;) {
+        ssize_t n = read(STDIN_FILENO, drain, sizeof(drain));
+        if (n < 0 && errno == EINTR)
+            continue;
+        if (n <= 0)
+            break;
+    }
+
+    sleep(3);
+}
+
 /* PS5 System Calls (Internal) */
 extern int sceNetCtlInit();
 extern int sceUserServiceInitialize(void *);
@@ -78,6 +117,10 @@ __attribute__((used)) volatile const char wkali_version_sig[] =
 int main(void) {
     struct MHD_Daemon *daemon;
     pid_t pid;
+
+    /* stdout is the sender socket. Once it closes, a log write must not
+     * kill us before the browser opens. */
+    signal(SIGPIPE, SIG_IGN);
 
     syscall(SYS_thr_set_name, -1, WKALI_THREAD_NAME);
 
@@ -101,6 +144,7 @@ int main(void) {
         return 0;
     }
 
+    wait_for_elf_sender();
 
     /* Initialize PS5 System Services */
     int err;
