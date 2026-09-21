@@ -195,25 +195,75 @@
       pointer-events: none;
     }
 
-    #logContainer {
-      margin-top: 1rem;
+    #logPanel {
+      margin-top: 1.25rem;
       width: 100%;
       max-width: 40rem;
-      height: 12rem;
-      background: rgba(0,0,0,0.72);
-      border: 1px solid rgba(42,159,255,0.28);
-      border-radius: 12px;
-      overflow-y: auto;
       text-align: left;
-      font-family: monospace;
-      font-size: 0.8rem;
-      padding: 0.5rem;
-      color: #cbd5e1;
+      border-radius: 14px;
+      border: 1px solid rgba(42,159,255,0.32);
+      background: rgba(4, 10, 22, 0.82);
+      -webkit-box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 24px rgba(42,159,255,0.12);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 24px rgba(42,159,255,0.12);
+      overflow: hidden;
+    }
+    #logPanel[hidden] { display: none !important; }
+    #logPanel .log-head {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid rgba(42,159,255,0.22);
+      background: rgba(18, 40, 72, 0.55);
+      color: #8ec8ff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    #logPanel .log-head .dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: #22c55e;
+      -webkit-box-shadow: 0 0 8px rgba(34,197,94,0.8);
+      box-shadow: 0 0 8px rgba(34,197,94,0.8);
+      margin-right: 0.45rem;
+      display: inline-block;
+    }
+    #logPanel.error .log-head .dot {
+      background: #ef4444;
+      -webkit-box-shadow: 0 0 8px rgba(239,68,68,0.85);
+      box-shadow: 0 0 8px rgba(239,68,68,0.85);
+    }
+    #logPanel.error .log-head { color: #fca5a5; border-bottom-color: rgba(239,68,68,0.35); }
+    #logContainer {
+      height: 11rem;
+      overflow-y: auto;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      padding: 0.65rem 0.85rem 0.85rem;
+      color: #a8bdd4;
       white-space: pre-wrap;
       word-wrap: break-word;
+      text-align: left;
     }
-    #logContainer.error {
-      color: #f00;
+    #logContainer .log-line {
+      margin: 0 0 0.2rem;
+      padding-left: 0.55rem;
+      border-left: 2px solid rgba(42,159,255,0.35);
+      color: #c5d6ea;
+    }
+    #logPanel.error #logContainer .log-line {
+      border-left-color: rgba(239,68,68,0.55);
+      color: #fecaca;
     }
 
     #cacheCorruptOverlay {
@@ -308,7 +358,10 @@
       <div id="progressBar"></div>
       <div id="progressPct">0%</div>
     </div>
-    <div id="logContainer" hidden></div>
+    <div id="logPanel" hidden>
+      <div class="log-head"><span><span class="dot"></span>Log</span></div>
+      <div id="logContainer"></div>
+    </div>
 
   </main>
 
@@ -340,13 +393,56 @@
         simulateCorrupt = params.get('simulate') === 'corrupt';
       })();
 
+      var logPanel = document.getElementById('logPanel');
       var logContainer = document.getElementById('logContainer');
       var seenLogs = "";
 
+      function friendlyLog(raw) {
+        var s = String(raw || '').replace(/^\s+|\s+$/g, '');
+        if (!s) return '';
+        /* Drop noisy HTTP file dumps */
+        if (/^\[HTTP\] Serving /.test(s)) return '';
+        if (/FORCE_EXPLOIT/.test(s)) return '';
+        if (/sysctl failed|malloc failed|kill failed/.test(s)) return '';
+        if (/Network Controller initialized|User Service initialized/.test(s)) return '';
+        if (/sceNetCtlInit failed|sceUserServiceInitialize failed/.test(s)) return '';
+        if (/ShellUIUtil|navigateToHome|userId=/.test(s)) return 'Closing...';
+        if (/Launching browser:/.test(s)) return 'Opening browser...';
+        if (/Installer v.*starting on port/.test(s)) return 'Starting installer...';
+        if (/Server running\. Waiting/.test(s)) return 'Waiting for cache...';
+        if (/App installed\. Stopping/.test(s)) return 'App installed.';
+        if (/App install failed/.test(s)) return 'Install failed.';
+        if (/Exit requested/.test(s)) return 'Closing...';
+        if (/WebKit data cleared successfully/.test(s)) return 'Browser data cleared.';
+        if (/WebKit data clear failed/.test(s)) return 'Could not clear browser data.';
+        if (/Re-launching browser after WebKit/.test(s)) return 'Restarting browser...';
+        if (/WebKit clear already attempted/.test(s)) return '';
+        if (/Updating existing app launcher/.test(s)) return 'Updating app...';
+        if (/Installing browser launcher app/.test(s)) return 'Installing app...';
+        if (/Launcher app installed successfully/.test(s)) return 'App ready.';
+        if (/Failed to start HTTP daemon/.test(s)) return 'Server error.';
+        if (/Cannot determine current user/.test(s)) return 'User error.';
+        if (/No webkit\/shell/.test(s)) return 'Nothing to clear.';
+        if (/Clearing /.test(s)) return 'Clearing browser data...';
+        if (/Cleared webkit\/shell/.test(s)) return 'Browser data cleared.';
+        if (/Errors clearing/.test(s)) return 'Clear failed.';
+        if (/Detected firmware.*umtx2/.test(s)) return 'Firmware: umtx2';
+        if (/Detected firmware.*poops/.test(s)) return 'Firmware: poops';
+        if (/Detected firmware.*p2jb/.test(s)) return 'Firmware: p2jb';
+        if (/sceAppInstUtilInitialize|Failed to create app dir|Failed to install|install_app: error/.test(s))
+          return 'Install error.';
+        /* Strip technical prefixes if nothing matched */
+        s = s.replace(/^\[WKALI\]\s*/, '').replace(/^\[Notify\]\s*/, '').replace(/^\[HTTP\]\s*/, '');
+        return s;
+      }
+
       function appendLog(msg) {
-        logContainer.hidden = false;
+        var text = friendlyLog(msg);
+        if (!text) return;
+        if (logPanel) logPanel.hidden = false;
         var div = document.createElement('div');
-        div.textContent = msg;
+        div.className = 'log-line';
+        div.textContent = text;
         logContainer.appendChild(div);
         logContainer.scrollTop = logContainer.scrollHeight;
       }
@@ -398,28 +494,28 @@
       }
 
       function setInstalled() {
-        statusEl.textContent = 'Installed successfully';
+        statusEl.textContent = 'Installed';
         statusEl.style.color = '#22c55e';
         progressBar.style.background = '-webkit-linear-gradient(90deg, #16a34a 0%, #22c55e 100%)';
-        detailEl.textContent = 'The PS5-WebKit-Autoloader shortcut is now on your PS5 homescreen. You can close this page.';
+        detailEl.textContent = 'Closing...';
         setProgress(100);
       }
 
       function setFailed() {
-        statusEl.textContent = 'Install failed';
+        statusEl.textContent = 'Failed';
         statusEl.style.color = '#ef4444';
         progressBar.style.background = '-webkit-linear-gradient(90deg, #dc2626 0%, #ef4444 100%)';
-        detailEl.textContent = 'The app could not be installed. Close this page and re-run the installer.';
+        detailEl.textContent = 'Close this page and run the installer again.';
       }
 
       function setSlow() {
-        statusEl.textContent = 'Caching is taking unusually long';
-        detailEl.textContent = 'The shortcut is only created after the cache finishes. If this never completes, close the browser and re-run the installer.';
+        statusEl.textContent = 'Still caching...';
+        detailEl.textContent = 'If this never finishes, close the browser and run again.';
       }
 
       function setCaching() {
-        statusEl.textContent = 'Caching content...';
-        detailEl.textContent = 'Please wait a moment. Do not close this page yet!';
+        statusEl.textContent = 'Caching...';
+        detailEl.textContent = 'Please wait. Do not close yet.';
         progressWrap.hidden = false;
       }
 
@@ -460,6 +556,7 @@
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
               setInstalled();
+              try { window.close(); } catch (e) {}
             } else {
               setFailed();
             }
@@ -489,8 +586,8 @@
         corruptionPromptShown = true;
         completed = true;
         progressWrap.hidden = true;
-        logContainer.hidden = true;
-        statusEl.textContent = 'Caching failed';
+        if (logPanel) logPanel.hidden = true;
+        statusEl.textContent = 'Cache failed';
         detailEl.textContent = '';
 
         var overlay = document.createElement('div');
@@ -622,37 +719,37 @@
       if (window.applicationCache) {
         window.applicationCache.addEventListener('checking', function () {
           progressWrap.hidden = false;
-          appendLog("[AppCache] Checking for manifest...");
+          appendLog("Checking cache...");
         });
         window.applicationCache.addEventListener('downloading', function () {
           isDownloading = true;
-          appendLog("[AppCache] Downloading cache...");
+          appendLog("Downloading...");
         });
         window.applicationCache.addEventListener('progress', function (e) {
-          if (e.url) appendLog("[AppCache] Fetching: " + e.url);
+          if (e.url) appendLog("Fetching...");
           if (e.total && e.total > 0) {
             var pct = Math.min(99, Math.round((e.loaded / e.total) * 100));
             setProgress(pct);
           }
         });
         window.applicationCache.addEventListener('error', function (e) {
-          appendLog("[AppCache] Error occurred! Status: " + window.applicationCache.status);
-          logContainer.className = 'error';
+          appendLog("Cache error.");
+          if (logPanel) logPanel.className = 'error';
           if (isDownloading) {
             setCacheCorrupted();
           }
         });
         window.applicationCache.addEventListener('obsolete', function (e) {
-          appendLog("[AppCache] Manifest is obsolete.");
+          appendLog("Cache outdated.");
         });
         window.applicationCache.addEventListener('cached', function() {
           isDownloading = false;
-          appendLog("[AppCache] Caching complete.");
+          appendLog("Cache done.");
           maybeInstall();
         });
         window.applicationCache.addEventListener('noupdate', function() {
           isDownloading = false;
-          appendLog("[AppCache] No update needed.");
+          appendLog("Cache ready.");
           maybeInstall();
         });
         window.applicationCache.addEventListener('updateready', function () {
