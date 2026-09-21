@@ -22,7 +22,7 @@ Jailbreak from the PS5 homescreen.
 
 ## Install
 
-1. Jailbreak with [SLOPKIT-PS5](https://github.com/X-F1REBALL-X/SLOPKIT-PS5) — it can auto-send this installer after JB.
+1. Jailbreak with [sjb](https://x-f1reball-x.github.io/sjb/) ([repo](https://github.com/X-F1REBALL-X/sjb)) — it can auto-send this installer after JB.
 2. Or download the `.elf` from Releases and send it to the ELF loader.
 3. Open the homescreen app and run the jailbreak.
 
