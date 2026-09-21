@@ -60,3 +60,6 @@ __pycache__/
 
 # Reference materials
 .for_reference/
+
+# refreshed menu payloads (overlaid at build)
+!third_party/public-payloads/*.elf
