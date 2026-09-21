@@ -11,161 +11,85 @@
     html, body { height: 100%; }
     body {
       font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: #000;
-      color: #ffffff;
-      min-height: 100%;
-      overflow: hidden;
-      text-align: center;
+      background: #000; color: #fff; min-height: 100%; overflow: hidden; text-align: center;
     }
     #bg {
-      position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 0;
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background: #000 url("/installer-hero.jpg") center center no-repeat;
       background-size: cover;
-      pointer-events: none;
     }
     #bg:after {
-      content: "";
-      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
-      background: rgba(0,0,0,0.38);
-      pointer-events: none;
+      content: ""; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.38); pointer-events: none;
     }
     main {
-      position: relative; z-index: 2;
-      height: 100%;
+      position: relative; z-index: 2; height: 100%;
       display: -webkit-box; display: -webkit-flex; display: flex;
       -webkit-box-orient: vertical; -webkit-box-direction: normal;
       -webkit-flex-direction: column; flex-direction: column;
       -webkit-box-align: center; -webkit-align-items: center; align-items: center;
       -webkit-box-pack: start; -webkit-justify-content: flex-start; justify-content: flex-start;
-      gap: 10px;
-      padding: 26vh 20px 80px;
-      background: transparent;
-      box-sizing: border-box;
+      gap: 10px; padding: 26vh 20px 80px; background: transparent;
     }
     #status {
-      margin: 0 0 8px;
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-shadow: 0 0 12px rgba(255,255,255,0.4);
+      margin: 0 0 8px; color: #fff; font-size: 18px; font-weight: 700;
+      letter-spacing: 0.04em; text-shadow: 0 0 12px rgba(255,255,255,0.4);
     }
-    #detail { display: none !important; }
     #progressWrap {
-      width: min(420px, 78vw);
-      height: 14px;
-      margin-top: 12px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.45);
-      overflow: hidden;
-      position: relative;
-      -webkit-box-shadow: 0 0 18px rgba(255,255,255,0.12);
+      width: min(420px, 78vw); height: 14px; margin-top: 12px; border-radius: 8px;
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.45);
+      overflow: hidden; position: relative;
       box-shadow: 0 0 18px rgba(255,255,255,0.12);
     }
     #progressWrap[hidden] { display: none !important; }
     #progressBar {
-      position: absolute; top: 0; left: 0;
-      height: 100%; width: 100%;
-      background: #ffffff;
-      background: -webkit-linear-gradient(90deg, #e8e8e8 0%, #ffffff 50%, #f5f5f5 100%);
+      position: absolute; top: 0; left: 0; height: 100%; width: 100%;
       background: linear-gradient(90deg, #e8e8e8 0%, #ffffff 50%, #f5f5f5 100%);
-      -webkit-box-shadow: 0 0 14px rgba(255,255,255,0.45);
-      box-shadow: 0 0 14px rgba(255,255,255,0.45);
       -webkit-transform: scaleX(0); transform: scaleX(0);
       -webkit-transform-origin: left center; transform-origin: left center;
       -webkit-transition: -webkit-transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
       transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
+      box-shadow: 0 0 14px rgba(255,255,255,0.45);
     }
     #progressPct {
-      margin-top: 10px;
-      color: #ffffff;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 14px rgba(255,255,255,0.45);
-    }
-    #elapsedMsg {
-      margin-top: 6px;
-      color: #e5e5e5;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-shadow: 0 0 8px rgba(255,255,255,0.2);
+      margin-top: 10px; color: #fff; font-size: 28px; font-weight: 800;
+      letter-spacing: 0.06em; text-shadow: 0 0 14px rgba(255,255,255,0.45);
     }
     #successMsg {
-      display: none;
-      margin-top: 10px;
-      color: #22c55e;
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      text-shadow: 0 0 16px rgba(34,197,94,0.45);
-    }
-    #failMsg {
-      display: none;
-      margin-top: 12px;
-      color: #ef4444;
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      text-shadow: 0 0 14px rgba(239,68,68,0.55);
-      padding: 0 20px;
+      display: none; margin-top: 12px; color: #22c55e; font-size: 18px; font-weight: 800;
+      letter-spacing: 0.02em; text-shadow: 0 0 16px rgba(34,197,94,0.45); line-height: 1.4;
     }
     body.done #status { display: none !important; }
     body.done #successMsg { display: block; }
     body.done #progressPct { color: #86efac; }
-    body.done #elapsedMsg { color: #86efac; }
     body.done #progressBar {
-      -webkit-transform: scaleX(1) !important;
-      transform: scaleX(1) !important;
+      -webkit-transform: scaleX(1) !important; transform: scaleX(1) !important;
       background: linear-gradient(90deg, #15803d, #16a34a, #22c55e, #86efac) !important;
       box-shadow: 0 0 14px rgba(34,197,94,0.55) !important;
     }
-    body.fail #status { display: none !important; }
-    body.fail #failMsg { display: block; }
-    body.fail #progressPct { color: #fca5a5; }
-    body.fail #elapsedMsg { color: #fca5a5; }
-    body.fail #progressBar {
-      background: linear-gradient(90deg, #991b1b, #ef4444, #fca5a5) !important;
-      box-shadow: 0 0 14px rgba(239,68,68,0.55) !important;
-    }
     #footer {
-      position: fixed; left: 0; right: 0; bottom: 12px;
-      text-align: center;
-      font-size: 16px;
-      color: #ffffff;
-      letter-spacing: 0.08em;
-      pointer-events: none;
-      line-height: 1.5;
-      text-shadow: 0 0 12px rgba(255,255,255,0.35);
-      z-index: 20;
+      position: fixed; left: 0; right: 0; bottom: 12px; text-align: center;
+      font-size: 16px; color: #fff; letter-spacing: 0.08em; pointer-events: none;
+      text-shadow: 0 0 12px rgba(255,255,255,0.35); z-index: 20;
     }
-    #footer b { color: #ffffff; font-weight: 600; }
-    #logPanel, .logo, h1, #bgGlow { display: none !important; }
+    #footer b { color: #fff; font-weight: 600; }
+    #detail, #failMsg, #elapsedMsg, #logPanel { display: none !important; }
     #cacheCorruptOverlay {
       position: fixed; inset: 0; z-index: 50;
       display: -webkit-box; display: -webkit-flex; display: flex;
-      -webkit-box-align: center; -webkit-align-items: center; align-items: center;
-      -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center;
-      background: rgba(0,0,0,0.72);
-      padding: 24px;
+      -webkit-box-align: center; align-items: center;
+      -webkit-box-pack: center; justify-content: center;
+      background: rgba(0,0,0,0.72); padding: 24px;
     }
     #cacheCorruptOverlay .card {
-      max-width: 420px; width: 100%;
-      padding: 22px 18px;
-      border-radius: 14px;
-      background: rgba(8,12,20,0.92);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      text-align: center;
+      max-width: 420px; width: 100%; padding: 22px 18px; border-radius: 14px;
+      background: rgba(8,12,20,0.92); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; text-align: center;
     }
     #cacheCorruptOverlay h2 { font-size: 18px; margin-bottom: 10px; }
     #cacheCorruptOverlay p { font-size: 14px; color: #e5e5e5; line-height: 1.4; margin-bottom: 14px; }
-    #cacheCorruptOverlay .actions { display: block; }
     #cacheCorruptOverlay .btn {
-      display: inline-block; margin: 6px;
-      padding: 10px 14px; border: 0; border-radius: 8px;
+      display: inline-block; margin: 6px; padding: 10px 14px; border: 0; border-radius: 8px;
       font-size: 14px; font-weight: 700; cursor: pointer;
     }
     #cacheCorruptOverlay .btn.primary { background: #2a9fff; color: #fff; }
@@ -177,13 +101,9 @@
   <main>
     <p id="status">Updating version…</p>
     <p id="detail"></p>
-    <div id="progressWrap">
-      <div id="progressBar"></div>
-    </div>
+    <div id="progressWrap"><div id="progressBar"></div></div>
     <div id="progressPct">0%</div>
-    <div id="elapsedMsg">Elapsed 0:00</div>
-    <div id="successMsg">Updated successfully</div>
-    <div id="failMsg">Update failed - run the installer again</div>
+    <div id="successMsg">Updated successfully<br>Close the page</div>
   </main>
   <div id="logPanel" hidden><div id="logContainer"></div></div>
   <footer id="footer"><b>Created by X-F1REBALL-X</b></footer>
@@ -191,11 +111,9 @@
   (function () {
     'use strict';
     var statusEl = document.getElementById('status');
-    var detailEl = document.getElementById('detail');
     var progressWrap = document.getElementById('progressWrap');
     var progressBar = document.getElementById('progressBar');
     var progressPct = document.getElementById('progressPct');
-    var elapsedMsg = document.getElementById('elapsedMsg');
     var completed = false;
     var isDownloading = false;
     var isRetry = false;
@@ -204,7 +122,6 @@
     var corruptionPromptShown = false;
     var probeOk = false;
     var logPos = 0;
-    var t0 = Date.now();
     var AUTOLOADER_URL = '/app/index.html';
 
     (function () {
@@ -213,18 +130,6 @@
       currentUid = params.get('uid') || '';
       simulateCorrupt = params.get('simulate') === 'corrupt';
     })();
-
-    function formatElapsed(ms) {
-      var s = Math.floor(ms / 1000);
-      var m = Math.floor(s / 60);
-      s = s % 60;
-      return m + ':' + (s < 10 ? '0' : '') + s;
-    }
-    setInterval(function () {
-      if (elapsedMsg && !completed) {
-        elapsedMsg.textContent = 'Elapsed ' + formatElapsed(Date.now() - t0);
-      }
-    }, 250);
 
     function setProgress(pct) {
       if (pct < 0) pct = 0;
@@ -239,16 +144,11 @@
       try { document.body.className = 'done'; } catch (e) {}
       statusEl.textContent = 'Updated successfully';
       setProgress(100);
-      if (elapsedMsg) elapsedMsg.textContent = 'Elapsed ' + formatElapsed(Date.now() - t0);
     }
 
-    function setFailed() {
-      completed = true;
-      try { document.body.className = 'fail'; } catch (e) {}
-      statusEl.textContent = 'Update failed - run the installer again';
-      progressBar.style.webkitTransform = 'scaleX(1)';
-      progressBar.style.transform = 'scaleX(1)';
-      setProgress(100);
+    /* No fail UI — keep progressing / retry quietly */
+    function setFailedQuiet() {
+      statusEl.textContent = 'Updating version…';
     }
 
     function setCaching() {
@@ -256,29 +156,16 @@
       progressWrap.hidden = false;
     }
 
-    function goToAutoloader() {
-      window.location.replace(AUTOLOADER_URL);
-    }
+    function goToAutoloader() { window.location.replace(AUTOLOADER_URL); }
 
     function friendlyLog(raw) {
       var s = String(raw || '').replace(/^\s+|\s+$/g, '');
       if (!s) return '';
-      if (/^\[HTTP\] Serving /.test(s)) return '';
-      if (/FORCE_EXPLOIT|sysctl failed|malloc failed|kill failed/.test(s)) return '';
-      if (/Network Controller initialized|User Service initialized/.test(s)) return '';
-      if (/sceNetCtlInit failed|sceUserServiceInitialize failed/.test(s)) return '';
-      if (/Updating existing app launcher|Installing browser launcher app/.test(s)) {
+      if (/Updating existing app launcher|Installing browser launcher app|App already up to date|Launcher app installed successfully|App installed/.test(s)) {
         statusEl.textContent = 'Updating version…';
-      }
-      if (/App already up to date|Launcher app installed successfully|App installed/.test(s)) {
-        statusEl.textContent = 'Updating version…';
-      }
-      if (/App install failed|Install error|Failed to install/.test(s)) {
-        setFailed();
       }
       return '';
     }
-
     function appendLog(msg) { friendlyLog(msg); }
 
     function pollLogs() {
@@ -337,11 +224,18 @@
             setInstalled();
             try { window.close(); } catch (e) {}
           } else {
-            setFailed();
+            /* no fail banner — allow another install attempt */
+            completed = false;
+            setFailedQuiet();
+            setTimeout(installApp, 1500);
           }
         }
       };
-      xhr.onerror = xhr.ontimeout = function () { setFailed(); };
+      xhr.onerror = xhr.ontimeout = function () {
+        completed = false;
+        setFailedQuiet();
+        setTimeout(installApp, 1500);
+      };
       xhr.send();
     }
 
@@ -356,7 +250,7 @@
       corruptionPromptShown = true;
       completed = true;
       progressWrap.hidden = true;
-      statusEl.textContent = 'Cache failed';
+      statusEl.textContent = 'Updating version…';
       var overlay = document.createElement('div');
       overlay.id = 'cacheCorruptOverlay';
       var card = document.createElement('div');
@@ -367,7 +261,7 @@
       var webkitShellPath = '/user/home/' + (currentUid || '<userid>') + '/webkit/shell/';
       if (isRetry) {
         title.textContent = 'Cache issue persists';
-        msg.textContent = 'Clearing WebKit data did not fix it. You can close this page.';
+        msg.textContent = 'You can close this page and run the installer again.';
         var exitXhr = new XMLHttpRequest();
         exitXhr.open('GET', '/exit', true);
         exitXhr.send();
@@ -395,7 +289,7 @@
         cancelBtn.className = 'btn secondary';
         cancelBtn.textContent = 'Cancel';
         cancelBtn.addEventListener('click', function () {
-          msg.textContent = 'Close this page and run the installer again.';
+          msg.textContent = 'Close the page';
           actions.hidden = true;
           var xhr = new XMLHttpRequest();
           xhr.open('GET', '/exit', true);
@@ -422,7 +316,7 @@
 
       var soft = 2;
       var softTimer = setInterval(function () {
-        if (completed) { clearInterval(softTimer); return; }
+        if (completed && document.body.className === 'done') { clearInterval(softTimer); return; }
         if (soft < 90) {
           soft += Math.max(0.4, (90 - soft) * 0.04);
           setProgress(soft);
@@ -430,7 +324,7 @@
       }, 300);
 
       var waitTimer = setInterval(function () {
-        if (completed) { clearInterval(waitTimer); return; }
+        if (document.body.className === 'done') { clearInterval(waitTimer); return; }
         if (!probeOk) {
           clearInterval(waitTimer);
           goToAutoloader();
@@ -465,7 +359,7 @@
       }
 
       setTimeout(function () {
-        if (!completed && probeOk) maybeInstall();
+        if (document.body.className !== 'done' && probeOk) maybeInstall();
       }, 45000);
     });
   })();
