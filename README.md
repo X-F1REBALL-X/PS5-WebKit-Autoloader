@@ -1,7 +1,5 @@
 # PS5-WebKit-Autoloader
 
-Version 0.2.2
-
 ![Jailbreak in progress](screenshots/jailbreak-progress.png)
 
 Jailbreak from the PS5 homescreen.
