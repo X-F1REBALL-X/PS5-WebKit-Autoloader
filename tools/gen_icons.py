@@ -2,7 +2,7 @@
 """Generate all derived icon assets from assets/icon.svg at build time.
 
 The master SVG is a full-bleed sphere with no padding and no background, so
-every generated asset gets a dark background and ~10% padding added.
+every generated asset gets a white background and ~10% padding added.
 
 Outputs:
   assets/icon0.png                        PS5 homescreen icon (512x512)
@@ -39,14 +39,15 @@ SCALE = (1.0 - 2.0 * PAD_FRACTION) * (VIEWBOX / 2.0) / ART_RADIUS
 TRANSLATE = VIEWBOX * (1.0 - SCALE) / 2.0
 ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
 
-BG_GRADIENT = """    <radialGradient id="wkalBg" cx="50%" cy="50%" r="75%">
-      <stop offset="0%" stop-color="#0e182b"/>
-      <stop offset="100%" stop-color="#060a13"/>
-    </radialGradient>"""
+BG_GRADIENT = """    <!-- solid white pad behind the circular badge -->
+    <linearGradient id="wkalBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>"""
 
 
 def build_wrapper_svg(master_src):
-    """Master SVG re-wrapped with a dark background and ~10% padding."""
+    """Master SVG re-wrapped with a white background and ~10% padding."""
     defs = re.search(r"<defs>(.*?)</defs>", master_src, re.S)
     art = re.search(r"</defs>(.*?)</svg>", master_src, re.S)
     if not defs or not art:
