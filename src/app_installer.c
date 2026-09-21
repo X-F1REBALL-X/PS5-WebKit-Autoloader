@@ -133,6 +133,7 @@ int wkali_app_is_up_to_date(void) {
   char param_path[256];
   char icon_path[256];
   char pic1_path[256];
+  char appmeta_pic1[256];
   struct stat st;
 
   snprintf(base_dir, sizeof(base_dir), "/user/app/%s", title_id);
@@ -142,6 +143,9 @@ int wkali_app_is_up_to_date(void) {
            title_id);
   snprintf(pic1_path, sizeof(pic1_path), "/user/app/%s/sce_sys/pic1.png",
            title_id);
+  /* Homescreen reads the selection background from appmeta, not only sce_sys. */
+  snprintf(appmeta_pic1, sizeof(appmeta_pic1), "/user/appmeta/%s/pic1.png",
+           title_id);
 
   if (stat(base_dir, &st) != 0)
     return 0;
@@ -150,6 +154,8 @@ int wkali_app_is_up_to_date(void) {
   if (needs_update(icon_path, icon0_png, icon0_png_size))
     return 0;
   if (needs_update(pic1_path, pic1_png, pic1_png_size))
+    return 0;
+  if (needs_update(appmeta_pic1, pic1_png, pic1_png_size))
     return 0;
   return 1;
 }
@@ -215,11 +221,50 @@ int wkali_install_app_if_needed(void) {
     return -1;
   }
 
+  /* Mirror metadata into /user/appmeta — XMB/homescreen reads pic1 from here. */
+  char appmeta_dir[256];
+  char appmeta_param[256];
+  char appmeta_icon[256];
+  char appmeta_pic1[256];
+  snprintf(appmeta_dir, sizeof(appmeta_dir), "/user/appmeta/%s", title_id);
+  snprintf(appmeta_param, sizeof(appmeta_param), "/user/appmeta/%s/param.json",
+           title_id);
+  snprintf(appmeta_icon, sizeof(appmeta_icon), "/user/appmeta/%s/icon0.png",
+           title_id);
+  snprintf(appmeta_pic1, sizeof(appmeta_pic1), "/user/appmeta/%s/pic1.png",
+           title_id);
+  if (mkdir_p(appmeta_dir, 0755) != 0) {
+    wkali_log("[WKALI] Failed to create appmeta dir: %s (errno: %d)\n",
+              appmeta_dir, errno);
+    sceAppInstUtilTerminate();
+    return -1;
+  }
+  if (install_file(appmeta_param, param_json, param_json_size)) {
+    wkali_log("[WKALI] Failed to install appmeta param.json\n");
+    sceAppInstUtilTerminate();
+    return -1;
+  }
+  if (install_file(appmeta_icon, icon0_png, icon0_png_size)) {
+    wkali_log("[WKALI] Failed to install appmeta icon0.png\n");
+    sceAppInstUtilTerminate();
+    return -1;
+  }
+  if (install_file(appmeta_pic1, pic1_png, pic1_png_size)) {
+    wkali_log("[WKALI] Failed to install appmeta pic1.png\n");
+    sceAppInstUtilTerminate();
+    return -1;
+  }
+
   if ((err = install_app(title_id, "/user/app/"))) {
     wkali_log("[WKALI] install_app: error 0x%08X\n", err);
     sceAppInstUtilTerminate();
     return -1;
   }
+
+  /* Re-write appmeta after register — some firmwares refresh icon0 only. */
+  install_file(appmeta_pic1, pic1_png, pic1_png_size);
+  install_file(appmeta_icon, icon0_png, icon0_png_size);
+  install_file(appmeta_param, param_json, param_json_size);
 
   wkali_log("[WKALI] Launcher app installed successfully.\n");
   wkali_notify("WebKit Autoloader App Ready!");
