@@ -2,9 +2,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
     <radialGradient id="bg" cx="42%" cy="32%" r="78%">
-      <stop offset="0%" stop-color="#123a66"/>
-      <stop offset="55%" stop-color="#0a1c33"/>
-      <stop offset="100%" stop-color="#000000"/>
+      <stop offset="0%" stop-color="#1a5a9a"/>
+      <stop offset="55%" stop-color="#0e3a6e"/>
+      <stop offset="100%" stop-color="#0a2a52"/>
     </radialGradient>
     <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#9ad2ff"/>
@@ -19,11 +19,9 @@
   <circle cx="512" cy="512" r="500" fill="url(#bg)"/>
   <circle cx="512" cy="512" r="438" fill="none" stroke="url(#ring)" stroke-width="34"/>
   <circle cx="512" cy="512" r="380" fill="none" stroke="#2a9fff" stroke-opacity="0.28" stroke-width="8"/>
-  <!-- WK monogram -->
-  <g fill="url(#letters)">
-    <!-- W -->
+  <!-- WK scaled to sit fully inside the ring -->
+  <g transform="translate(512 512) scale(0.72) translate(-512 -512)" fill="url(#letters)">
     <path d="M188 320h92l62 268 70-268h88l70 268 62-268h92L612 704H508l-66-252-66 252H272L188 320z"/>
-    <!-- K -->
     <path d="M640 320h96v152l118-152h112L794 512l178 192H858L736 552v152h-96V320z"/>
   </g>
 </svg>

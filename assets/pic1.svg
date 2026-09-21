@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="badge" cx="42%" cy="32%" r="78%">
+      <stop offset="0%" stop-color="#1a5a9a"/>
+      <stop offset="55%" stop-color="#0e3a6e"/>
+      <stop offset="100%" stop-color="#0a2a52"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9ad2ff"/>
+      <stop offset="45%" stop-color="#2a9fff"/>
+      <stop offset="100%" stop-color="#1a7fd9"/>
+    </linearGradient>
+    <linearGradient id="letters" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cfe9ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#ffffff"/>
+  <g transform="translate(960 540)">
+    <circle r="380" fill="url(#badge)"/>
+    <circle r="333" fill="none" stroke="url(#ring)" stroke-width="26"/>
+    <circle r="289" fill="none" stroke="#2a9fff" stroke-opacity="0.28" stroke-width="6"/>
+    <g transform="scale(0.62) translate(-512 -512)" fill="url(#letters)">
+      <path d="M188 320h92l62 268 70-268h88l70 268 62-268h92L612 704H508l-66-252-66 252H272L188 320z"/>
+      <path d="M640 320h96v152l118-152h112L794 512l178 192H858L736 552v152h-96V320z"/>
+    </g>
+  </g>
+</svg>
