@@ -171,5 +171,26 @@ fi
 
 PAYLOAD_TAG=$(git -C "$PAYLOAD_SUBMODULE" describe --tags --always)
 
-download_release "$ELFLDR_REPO" "$ELFLDR_TAG" "$ELFLDR_DEST"
-download_release "$PAYLOAD_REPO" "$PAYLOAD_TAG" "$PAYLOAD_DEST"
+OVERLAY_ELFLDR="$ROOT/third_party/public-payloads/elfldr-ps5.elf"
+if [ -f "$OVERLAY_ELFLDR" ]; then
+  mkdir -p "$(dirname "$ELFLDR_DEST")"
+  cp -f "$OVERLAY_ELFLDR" "$ELFLDR_DEST"
+  echo "shared elfldr: using third_party/public-payloads/elfldr-ps5.elf (skip download)"
+else
+  download_release "$ELFLDR_REPO" "$ELFLDR_TAG" "$ELFLDR_DEST" || {
+    if [ -f "$ELFLDR_DEST" ]; then
+      echo "warning: elfldr download failed; keeping existing $ELFLDR_DEST"
+    else
+      exit 1
+    fi
+  }
+fi
+
+download_release "$PAYLOAD_REPO" "$PAYLOAD_TAG" "$PAYLOAD_DEST" || {
+  if [ -f "$PAYLOAD_DEST" ]; then
+    echo "warning: unified-autoloader download failed; keeping existing $PAYLOAD_DEST"
+  else
+    exit 1
+  fi
+}
+

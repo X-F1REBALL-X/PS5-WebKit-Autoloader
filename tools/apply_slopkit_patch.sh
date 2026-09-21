@@ -119,3 +119,17 @@ if [ -d "$PUBLIC_OFFSETS" ]; then
   done
   echo "slopkit: overlaid $copied public 13.xx offset profile(s) into $DEST/offsets/"
 fi
+
+# Overlay refreshed payload ELFs (keep submodule payloads pristine).
+PAYLOAD_OVERLAY="$ROOT/third_party/public-payloads"
+if [ -d "$PAYLOAD_OVERLAY" ]; then
+  mkdir -p "$DEST/payloads"
+  count=0
+  for f in "$PAYLOAD_OVERLAY"/*.{elf,bin}; do
+    [ -f "$f" ] || continue
+    cp -f "$f" "$DEST/payloads/$(basename "$f")"
+    count=$((count + 1))
+  done
+  echo "slopkit: overlaid $count public payload(s) into $DEST/payloads/"
+fi
+
