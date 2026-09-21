@@ -89,6 +89,9 @@ if ! grep -q 'sendPayloadToElfldr(cfg.autoload, "../../payloads/"' slopkit/poops
     echo "  git -C $SOURCE diff > $PATCH"
     exit 1
 fi
+# Extra settle after elfldr accepts (Payload Manager panic if too soon).
+python3 "$ROOT/tools/slopkit_autoload_settle.py" "$DEST"
+
 echo "slopkit: patch verification OK (autoload block + probe-path autoload,"
 echo "         exactQuery relaxation, hidden payload.elf tile, shared elfldr"
 echo "         on poops + p2jb)."
