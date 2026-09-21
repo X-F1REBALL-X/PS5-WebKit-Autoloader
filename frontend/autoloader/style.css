@@ -156,8 +156,8 @@ main[hidden] { display: none !important; }
   transform: scaleX(0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
-  -webkit-transition: -webkit-transform 0.35s ease-out;
-  transition: transform 0.35s ease-out;
+  -webkit-transition: -webkit-transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 #progressLabel {
   display: none !important;
@@ -187,7 +187,7 @@ body.done #successMsg {
 body.done #progressBar {
   -webkit-transform: scaleX(1) !important;
   transform: scaleX(1) !important;
-  background: linear-gradient(90deg, #15803d, #22c55e, #86efac) !important;
+  background: linear-gradient(90deg, #15803d, #16a34a, #22c55e, #86efac) !important;
   box-shadow: 0 0 14px rgba(34, 197, 94, 0.55) !important;
 }
 
@@ -542,8 +542,8 @@ body.p2jb-done .stats-fill {
   transform: scaleX(0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
-  -webkit-transition: -webkit-transform 0.35s ease-out;
-  transition: transform 0.35s ease-out;
+  -webkit-transition: -webkit-transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #progressPct {
@@ -618,7 +618,7 @@ body.done #progressBar {
   transform: scaleX(1) !important;
   -webkit-animation: none;
   animation: none;
-  background: linear-gradient(90deg, #15803d, #22c55e, #86efac) !important;
+  background: linear-gradient(90deg, #15803d, #16a34a, #22c55e, #86efac) !important;
   box-shadow: 0 0 14px rgba(34, 197, 94, 0.55) !important;
 }
 body.fail #failMsg { display: block; }
