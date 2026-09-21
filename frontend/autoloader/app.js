@@ -154,11 +154,12 @@
         return;
       }
       if (progressPct >= 94) return;
-      var next = progressPct + Math.max(0.55, (94 - progressPct) * 0.045);
+      /* Smaller steps, more often — smoother on PS5 WebKit */
+      var next = progressPct + Math.max(0.28, (94 - progressPct) * 0.028);
       if (next > 94) next = 94;
-      var floored = Math.floor(next);
-      if (floored !== progressPct) updateProgress(floored);
-    }, 1000);
+      var floored = Math.floor(next * 10) / 10;
+      if (floored !== progressPct) updateProgress(Math.floor(floored));
+    }, 400);
   }
 
   function stopElapsed() {
@@ -206,7 +207,7 @@
     var start = Date.now();
     if (message && progressLabel) progressLabel.textContent = message;
     var anim = setInterval(function () {
-      var p = Math.min(1, (Date.now() - start) / 650);
+      var p = Math.min(1, (Date.now() - start) / 900);
       updateProgress(Math.floor(from + (100 - from) * p));
       if (p >= 1) {
         try { clearInterval(anim); } catch (eA) {}
