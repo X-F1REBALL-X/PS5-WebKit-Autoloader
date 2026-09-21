@@ -231,6 +231,12 @@ int wkali_install_app_if_needed(void) {
     return -1;
   }
 
+  /* Drop the old Media/Games registration so category + badge re-apply cleanly. */
+  if (stat(base_dir, &st) == 0) {
+    err = sceAppInstUtilAppUnInstall(title_id);
+    wkali_log("[WKALI] UnInstall %s: 0x%08X\n", title_id, err);
+  }
+
   char sce_sys_dir[256];
   snprintf(sce_sys_dir, sizeof(sce_sys_dir), "/user/app/%s/sce_sys", title_id);
   if (mkdir_p(sce_sys_dir, 0755) != 0) {

@@ -1,9 +1,10 @@
 {
     "titleId": "SLKT00001",
     "contentId": "SL0000-SLKT00001_00-WKALIAUTOLOADER1",
-    "contentVersion": "01.067.000",
+    "contentVersion": "01.068.000",
     "masterVersion": "01.00",
     "applicationCategoryType": 0,
+    "contentBadgeType": 1,
     "backgroundBasematType": "Linear",
     "deeplinkUri": "http://127.0.0.1:18181/app/index.html",
     "localizedParameters": {
