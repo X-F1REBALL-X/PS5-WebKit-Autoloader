@@ -56,7 +56,6 @@ WKAL_HOST_SOURCES := pc-host/host.py $(FRONTEND_FILES)
 CFLAGS  := -Os -Wall -ffunction-sections -fdata-sections $(INCLUDES)
 LDFLAGS := -Wl,--gc-sections
 
-# Test builds that simulate a corrupted WebKit AppCache (see tools/build_cache_corruption_test_elfs.sh):
 #   SIMULATE=0 (default) - production behavior, corruption detection only
 #   SIMULATE=1 - every cache download fails until /clear-webkit-data succeeds
 #                (tests the clear-and-retry repair flow end to end)
