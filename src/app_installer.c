@@ -167,10 +167,10 @@ int wkali_install_app_if_needed(void) {
 
   if (stat(base_dir, &st) == 0) {
     wkali_log("[WKALI] Updating existing app launcher (%s)...\n", title_id);
-    wkali_notify("Updating WebKit Autoloader App...");
+    wkali_notify("Updating WK Autoloader...");
   } else {
     wkali_log("[WKALI] Installing browser launcher app (%s)...\n", title_id);
-    wkali_notify("Installing WebKit Autoloader App...");
+    wkali_notify("Installing WK Autoloader...");
   }
 
   int err;
@@ -213,7 +213,7 @@ int wkali_install_app_if_needed(void) {
   }
 
   wkali_log("[WKALI] Launcher app installed successfully.\n");
-  wkali_notify("WebKit Autoloader App Ready!");
+  wkali_notify("WK Autoloader Ready!");
 
   sceAppInstUtilTerminate();
   return 0;
