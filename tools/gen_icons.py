@@ -121,6 +121,22 @@ def build_ico(pngs):
     return header + entries + b"".join(data for _, data in pngs)
 
 
+
+def maybe_load_custom_icon0():
+    """Return RGB 512x512 PIL image if assets/icon0.custom.png exists."""
+    custom = os.path.join(ROOT, "assets", "icon0.custom.png")
+    if not os.path.isfile(custom):
+        return None
+    try:
+        from PIL import Image
+    except ImportError:
+        print("Error: Pillow required for assets/icon0.custom.png")
+        sys.exit(1)
+    im = Image.open(custom).convert("RGB")
+    if im.size != (512, 512):
+        im = im.resize((512, 512), Image.LANCZOS)
+    return im
+
 def main():
     with open(MASTER, "r") as f:
         master_src = f.read()
@@ -134,11 +150,24 @@ def main():
             f.write(wrapper)
 
         # PS5 homescreen icon (512x512) and Windows .exe icon (16-256px)
-        with open(ICON0, "wb") as f:
-            f.write(render(wrapper_path, 512))
-        pngs = [(size, render(wrapper_path, size)) for size in ICO_SIZES]
-        with open(ICON_ICO, "wb") as f:
-            f.write(build_ico(pngs))
+        custom_im = maybe_load_custom_icon0()
+        if custom_im is not None:
+            custom_im.save(ICON0, "PNG", optimize=True)
+            pngs = []
+            import io as _io
+            for size in ICO_SIZES:
+                buf = _io.BytesIO()
+                custom_im.resize((size, size), __import__("PIL").Image.LANCZOS).save(buf, format="PNG")
+                pngs.append((size, buf.getvalue()))
+            with open(ICON_ICO, "wb") as f:
+                f.write(build_ico(pngs))
+            print("Using custom homescreen icon: assets/icon0.custom.png")
+        else:
+            with open(ICON0, "wb") as f:
+                f.write(render(wrapper_path, 512))
+            pngs = [(size, render(wrapper_path, size)) for size in ICO_SIZES]
+            with open(ICON_ICO, "wb") as f:
+                f.write(build_ico(pngs))
 
         # Favicon SVGs (same wrapper, no rasterization needed)
         for path in (FAVICON_INSTALLER, FAVICON_AUTOLOADER):
