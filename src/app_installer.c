@@ -14,7 +14,6 @@
 
 #include "app_installer.h"
 #include "wkali.h"
-#include "inflate.h"
 #include <ps5/kernel.h>
 
 #define INCASSET(name, file)                                                   \
@@ -31,10 +30,6 @@
 
 INCASSET(param_json, "assets/param.json");
 INCASSET(icon0_png, "assets/icon0.png");
-/* pic0 = selected-app homescreen background (PNG + deflated DDS). */
-INCASSET(pic0_png, "assets/pic0.png");
-INCASSET(pic0_dds_z, "assets/pic0.dds.z");
-#define PIC0_DDS_ORIG_SIZE 8294528u
 
 int sceAppInstUtilInitialize(void);
 int sceAppInstUtilTerminate(void);
@@ -80,33 +75,6 @@ static int install_file(const char *path, const uint8_t *data, size_t size) {
   }
   fclose(f);
   return 0;
-}
-
-
-/* Decompress embedded pic0.dds.z (raw DEFLATE) once. */
-static const uint8_t *pic0_dds_data(size_t *out_size) {
-  static uint8_t *buf;
-  static size_t len;
-  if (buf) {
-    if (out_size)
-      *out_size = len;
-    return buf;
-  }
-  buf = malloc(PIC0_DDS_ORIG_SIZE);
-  if (!buf)
-    return 0;
-  unsigned long destlen = PIC0_DDS_ORIG_SIZE;
-  unsigned long sourcelen = (unsigned long)pic0_dds_z_size;
-  if (puff(buf, &destlen, (unsigned char *)pic0_dds_z, &sourcelen) != 0 ||
-      destlen != PIC0_DDS_ORIG_SIZE) {
-    free(buf);
-    buf = 0;
-    return 0;
-  }
-  len = (size_t)destlen;
-  if (out_size)
-    *out_size = len;
-  return buf;
 }
 
 static int install_app(const char *title_id, const char *dir) {
@@ -163,9 +131,6 @@ int wkali_app_is_up_to_date(void) {
   char base_dir[256];
   char param_path[256];
   char icon_path[256];
-  char pic0_path[256];
-  char pic1_path[256];
-  char appmeta_pic0[256];
   struct stat st;
 
   snprintf(base_dir, sizeof(base_dir), "/user/app/%s", title_id);
@@ -173,19 +138,6 @@ int wkali_app_is_up_to_date(void) {
            title_id);
   snprintf(icon_path, sizeof(icon_path), "/user/app/%s/sce_sys/icon0.png",
            title_id);
-  char pic0_dds_path[256];
-  char appmeta_pic0_dds[256];
-  snprintf(pic0_path, sizeof(pic0_path), "/user/app/%s/sce_sys/pic0.png",
-           title_id);
-  snprintf(pic1_path, sizeof(pic1_path), "/user/app/%s/sce_sys/pic1.png",
-           title_id);
-  snprintf(pic0_dds_path, sizeof(pic0_dds_path),
-           "/user/app/%s/sce_sys/pic0.dds", title_id);
-  /* Homescreen focus art is read from appmeta (prefer DDS). */
-  snprintf(appmeta_pic0, sizeof(appmeta_pic0), "/user/appmeta/%s/pic0.png",
-           title_id);
-  snprintf(appmeta_pic0_dds, sizeof(appmeta_pic0_dds),
-           "/user/appmeta/%s/pic0.dds", title_id);
 
   if (stat(base_dir, &st) != 0)
     return 0;
@@ -193,66 +145,7 @@ int wkali_app_is_up_to_date(void) {
     return 0;
   if (needs_update(icon_path, icon0_png, icon0_png_size))
     return 0;
-  if (needs_update(pic0_path, pic0_png, pic0_png_size))
-    return 0;
-  if (needs_update(pic1_path, pic0_png, pic0_png_size))
-    return 0;
-  {
-    size_t dds_sz = 0;
-    const uint8_t *dds = pic0_dds_data(&dds_sz);
-    if (!dds)
-      return 0;
-    if (needs_update(pic0_dds_path, dds, dds_sz))
-      return 0;
-    if (needs_update(appmeta_pic0_dds, dds, dds_sz))
-      return 0;
-  }
-  if (needs_update(appmeta_pic0, pic0_png, pic0_png_size))
-    return 0;
   return 1;
-}
-
-/* Mirror into /user/appmeta — PS5 home UI reads focus background from here. */
-static void mirror_appmeta(const char *title_id) {
-  char meta_dir[256];
-  char path[256];
-
-  snprintf(meta_dir, sizeof(meta_dir), "/user/appmeta/%s", title_id);
-  if (mkdir_p(meta_dir, 0755) != 0) {
-    wkali_log("[WKALI] appmeta mkdir failed: %s errno=%d\n", meta_dir, errno);
-    return;
-  }
-
-  snprintf(path, sizeof(path), "/user/appmeta/%s/param.json", title_id);
-  if (install_file(path, param_json, param_json_size))
-    wkali_log("[WKALI] appmeta param.json failed\n");
-
-  snprintf(path, sizeof(path), "/user/appmeta/%s/icon0.png", title_id);
-  if (install_file(path, icon0_png, icon0_png_size))
-    wkali_log("[WKALI] appmeta icon0.png failed\n");
-
-  snprintf(path, sizeof(path), "/user/appmeta/%s/pic0.png", title_id);
-  if (install_file(path, pic0_png, pic0_png_size))
-    wkali_log("[WKALI] appmeta pic0.png failed\n");
-
-  snprintf(path, sizeof(path), "/user/appmeta/%s/pic1.png", title_id);
-  if (install_file(path, pic0_png, pic0_png_size))
-    wkali_log("[WKALI] appmeta pic1.png failed\n");
-
-  {
-    size_t dds_sz = 0;
-    const uint8_t *dds = pic0_dds_data(&dds_sz);
-    if (!dds) {
-      wkali_log("[WKALI] appmeta pic0.dds inflate failed\n");
-    } else {
-      snprintf(path, sizeof(path), "/user/appmeta/%s/pic0.dds", title_id);
-      if (install_file(path, dds, dds_sz))
-        wkali_log("[WKALI] appmeta pic0.dds failed\n");
-      snprintf(path, sizeof(path), "/user/appmeta/%s/pic1.dds", title_id);
-      if (install_file(path, dds, dds_sz))
-        wkali_log("[WKALI] appmeta pic1.dds failed\n");
-    }
-  }
 }
 
 int wkali_install_app_if_needed(void) {
@@ -260,18 +153,12 @@ int wkali_install_app_if_needed(void) {
   char base_dir[256];
   char param_path[256];
   char icon_path[256];
-  char pic0_path[256];
-  char pic1_path[256];
   struct stat st;
 
   snprintf(base_dir, sizeof(base_dir), "/user/app/%s", title_id);
   snprintf(param_path, sizeof(param_path), "/user/app/%s/sce_sys/param.json",
            title_id);
   snprintf(icon_path, sizeof(icon_path), "/user/app/%s/sce_sys/icon0.png",
-           title_id);
-  snprintf(pic0_path, sizeof(pic0_path), "/user/app/%s/sce_sys/pic0.png",
-           title_id);
-  snprintf(pic1_path, sizeof(pic1_path), "/user/app/%s/sce_sys/pic1.png",
            title_id);
 
   if (wkali_app_is_up_to_date()) {
@@ -292,7 +179,7 @@ int wkali_install_app_if_needed(void) {
     return -1;
   }
 
-  /* Drop the old Media/Games registration so category + badge re-apply cleanly. */
+  /* Clear any prior Games-category registration before Media reinstall. */
   if (stat(base_dir, &st) == 0) {
     err = sceAppInstUtilAppUnInstall(title_id);
     wkali_log("[WKALI] UnInstall %s: 0x%08X\n", title_id, err);
@@ -319,46 +206,11 @@ int wkali_install_app_if_needed(void) {
     return -1;
   }
 
-  /* pic0 = home focus background (what was missing). */
-  if (install_file(pic0_path, pic0_png, pic0_png_size)) {
-    wkali_log("[WKALI] Failed to install pic0.png (focus background)\n");
-    sceAppInstUtilTerminate();
-    return -1;
-  }
-
-  if (install_file(pic1_path, pic0_png, pic0_png_size)) {
-    wkali_log("[WKALI] Failed to install pic1.png\n");
-    sceAppInstUtilTerminate();
-    return -1;
-  }
-
-  {
-    char pic0_dds_path[256];
-    char pic1_dds_path[256];
-    size_t dds_sz = 0;
-    const uint8_t *dds = pic0_dds_data(&dds_sz);
-    snprintf(pic0_dds_path, sizeof(pic0_dds_path),
-             "/user/app/%s/sce_sys/pic0.dds", title_id);
-    snprintf(pic1_dds_path, sizeof(pic1_dds_path),
-             "/user/app/%s/sce_sys/pic1.dds", title_id);
-    if (!dds || install_file(pic0_dds_path, dds, dds_sz) ||
-        install_file(pic1_dds_path, dds, dds_sz)) {
-      wkali_log("[WKALI] Failed to install pic0/pic1.dds\n");
-      sceAppInstUtilTerminate();
-      return -1;
-    }
-  }
-
-  mirror_appmeta(title_id);
-
   if ((err = install_app(title_id, "/user/app/"))) {
     wkali_log("[WKALI] install_app: error 0x%08X\n", err);
     sceAppInstUtilTerminate();
     return -1;
   }
-
-  /* Registration can refresh appmeta — write focus art again last. */
-  mirror_appmeta(title_id);
 
   wkali_log("[WKALI] Launcher app installed successfully.\n");
   wkali_notify("WebKit Autoloader App Ready!");
