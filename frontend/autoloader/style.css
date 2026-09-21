@@ -463,8 +463,6 @@ body.p2jb-done .stats-fill {
   margin: 0 0 18px;
   position: relative;
   z-index: 2;
-  -webkit-filter: drop-shadow(0 0 12px rgba(42,159,255,0.55));
-  filter: drop-shadow(0 0 12px rgba(42,159,255,0.55));
 }
 
 #titleMsg {
@@ -540,24 +538,12 @@ body.p2jb-done .stats-fill {
   background: #2a9fff;
   background: -webkit-linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
   background: linear-gradient(90deg, #1a7fd9 0%, #2a9fff 45%, #7ec8ff 100%);
-  -webkit-box-shadow: 0 0 18px rgba(42,159,255,0.85);
-  box-shadow: 0 0 18px rgba(42,159,255,0.85);
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transform-origin: left center;
   transform-origin: left center;
   -webkit-transition: -webkit-transform 0.35s ease-out;
   transition: transform 0.35s ease-out;
-  -webkit-animation: barGlow 1.6s ease-in-out infinite;
-  animation: barGlow 1.6s ease-in-out infinite;
-}
-@-webkit-keyframes barGlow {
-  0%, 100% { -webkit-box-shadow: 0 0 10px rgba(42,159,255,0.45); box-shadow: 0 0 10px rgba(42,159,255,0.45); }
-  50% { -webkit-box-shadow: 0 0 22px rgba(42,159,255,0.95); box-shadow: 0 0 22px rgba(42,159,255,0.95); }
-}
-@keyframes barGlow {
-  0%, 100% { box-shadow: 0 0 10px rgba(42,159,255,0.45); }
-  50% { box-shadow: 0 0 22px rgba(42,159,255,0.95); }
 }
 
 #progressPct {
