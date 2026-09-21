@@ -410,6 +410,7 @@
         if (/Launching browser:/.test(s)) return 'Opening browser...';
         if (/Installer v.*starting on port/.test(s)) return 'Starting installer...';
         if (/Server running\. Waiting/.test(s)) return 'Waiting for cache...';
+        if (/App already up to date/.test(s)) return 'Already up to date.';
         if (/App installed\. Stopping/.test(s)) return 'App installed.';
         if (/App install failed/.test(s)) return 'Install failed.';
         if (/Exit requested/.test(s)) return 'Closing...';
