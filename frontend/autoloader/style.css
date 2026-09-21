@@ -164,16 +164,22 @@ main[hidden] { display: none !important; }
 }
 #successMsg {
   display: none;
-  margin-top: 18px;
+  margin-top: 10px;
+  padding: 12px 18px;
   color: #ffffff;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 16px rgba(255,255,255,0.45);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 16px rgba(34, 197, 94, 0.45);
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 0 20px;
+}
+#successMsg .check {
+  display: inline-block;
+  margin-right: 8px;
+  color: #22c55e;
+  text-shadow: 0 0 14px rgba(34, 197, 94, 0.8);
 }
 body.done #successMsg {
   display: block;
@@ -181,6 +187,8 @@ body.done #successMsg {
 body.done #progressBar {
   -webkit-transform: scaleX(1) !important;
   transform: scaleX(1) !important;
+  background: linear-gradient(90deg, #15803d, #22c55e, #86efac) !important;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.55) !important;
 }
 
 #logWrapper {
@@ -577,24 +585,24 @@ body.p2jb-done .stats-fill {
 
 #successMsg {
   display: none;
-  margin-top: 22px;
+  margin-top: 10px;
+  padding: 12px 18px;
   color: #ffffff;
-  font-size: 34px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 16px rgba(34, 197, 94, 0.45);
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 0 20px;
   line-height: 1.3;
 }
 #successMsg .check {
   display: inline-block;
   margin-right: 8px;
-  color: #47c76a;
-  text-shadow: 0 0 14px rgba(71,199,106,0.7);
-  font-size: 36px;
+  color: #22c55e;
+  text-shadow: 0 0 14px rgba(34, 197, 94, 0.8);
+  font-size: 18px;
 }
 
 #failMsg {
@@ -616,7 +624,7 @@ body.done #statusMsg,
 body.fail #statusMsg {
   display: none !important;
 }
-body.done #progressPct { color: #ffffff; }
+body.done #progressPct { color: #86efac; }
 body.done #successMsg { display: block; }
 body.done #failMsg { display: none !important; }
 body.done #progressBar {
@@ -624,6 +632,8 @@ body.done #progressBar {
   transform: scaleX(1) !important;
   -webkit-animation: none;
   animation: none;
+  background: linear-gradient(90deg, #15803d, #22c55e, #86efac) !important;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.55) !important;
 }
 body.fail #failMsg { display: block; }
 body.fail #successMsg { display: none !important; }
