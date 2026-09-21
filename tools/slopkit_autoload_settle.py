@@ -7,7 +7,7 @@ from pathlib import Path
 SETTLE = (
     "    // Let elfldr settle before sending payload.elf "
     "(avoids panic on Payload Manager).\n"
-    "    await new Promise(function (resolve) { setTimeout(resolve, 3000); });\n"
+    "    await new Promise(function (resolve) { setTimeout(resolve, 5000); });\n"
 )
 
 def patch_file(path: Path) -> bool:
