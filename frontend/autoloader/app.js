@@ -89,15 +89,19 @@
 
   function uiLog(message, type) {
     type = type || 'info';
+    if (!logContainer) return;
+    /* #logWrapper stays hidden during the run. Skip the nodes and the
+       scroll, which would force layout on the exploit thread. */
+    var wrap = logContainer.parentNode;
+    if (!wrap || wrap.hidden) return;
     var entry = document.createElement('div');
     entry.className = 'line ' + type;
     entry.textContent = message;
-    if (!logContainer) return;
     logContainer.appendChild(entry);
     while (logContainer.childElementCount > MAX_LOG_LINES) {
       logContainer.removeChild(logContainer.firstChild);
     }
-    logContainer.parentNode.scrollTop = logContainer.parentNode.scrollHeight;
+    wrap.scrollTop = wrap.scrollHeight;
     return entry;
   }
 
@@ -113,11 +117,16 @@
       progressPct = percent;
     }
     if (progressBar) {
-      progressBar.style.webkitTransform = 'scaleX(' + (progressPct / 100) + ')';
-      progressBar.style.transform = 'scaleX(' + (progressPct / 100) + ')';
+      var scale = 'scaleX(' + (progressPct / 100) + ')';
+      if (progressBar.__scale !== scale) {
+        progressBar.__scale = scale;
+        progressBar.style.webkitTransform = scale;
+        progressBar.style.transform = scale;
+      }
     }
     if (progressPctEl) {
-      progressPctEl.textContent = progressPct + '%';
+      var pctText = progressPct + '%';
+      if (progressPctEl.textContent !== pctText) progressPctEl.textContent = pctText;
     }
     if (message) {
       if (progressLabel) progressLabel.textContent = message;
@@ -147,8 +156,9 @@
       if (progressPct >= 94) return;
       var next = progressPct + Math.max(0.55, (94 - progressPct) * 0.045);
       if (next > 94) next = 94;
-      updateProgress(Math.floor(next));
-    }, 280);
+      var floored = Math.floor(next);
+      if (floored !== progressPct) updateProgress(floored);
+    }, 1000);
   }
 
   function stopElapsed() {
@@ -171,8 +181,9 @@
     if (elapsedMsgEl) elapsedMsgEl.textContent = 'Elapsed 0:00';
     elapsedTimer = setInterval(function () {
       if (!elapsedMsgEl) return;
-      elapsedMsgEl.textContent = 'Elapsed ' + formatElapsed(Date.now() - elapsedStart);
-    }, 250);
+      var elapsedText = 'Elapsed ' + formatElapsed(Date.now() - elapsedStart);
+      if (elapsedMsgEl.textContent !== elapsedText) elapsedMsgEl.textContent = elapsedText;
+    }, 1000);
   }
 
   function setMeta(fwStr, chain) {
@@ -428,7 +439,14 @@
       if (progressLabel) progressLabel.textContent = lastStageText;
       startProgressDriver();
       var st = lastStageText || '';
-      if (/fail|reboot|error|refus|unlucky/i.test(st) || lastStageCls.indexOf('bad') !== -1) {
+      /* "SUCCESS -- N PASS / 0 FAIL" contains the word FAIL. That is a pass
+         summary, not a terminal failure — do not set finished on it.
+         A real fail line that also says "0 FAIL" (reboot required, FAILED)
+         still counts. */
+      var passSummary = /SUCCESS\s*--/i.test(st)
+        || (/PASS\s*\/\s*0\s*FAIL/i.test(st)
+            && !/reboot|FAILED\b|boot failed|autoload failed|refused|error|unlucky/i.test(st));
+      if (!passSummary && (/fail|reboot|error|refus|unlucky/i.test(st) || lastStageCls.indexOf('bad') !== -1)) {
         uiLog('[stage] ' + lastStageText, 'error');
         if (!finished) {
           finished = true;
@@ -876,7 +894,10 @@
        let the stage/autoload messages own the UI again. */
     var live = doc.getElementById('livestat');
     if (live && live.textContent && !p2jbComplete) {
-      renderP2jbStats(live.textContent);
+      var statsRoot = document.getElementById('p2jbStats');
+      /* Quiet UI keeps #p2jbStats hidden. Un-hiding and repainting it every
+         tick only thrashes the thread the exploit is running on. */
+      if (statsRoot && !statsRoot.hidden) renderP2jbStats(live.textContent);
     }
 
     var lines = scr.textContent.split('\n');
