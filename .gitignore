@@ -63,3 +63,7 @@ __pycache__/
 
 # refreshed menu payloads (overlaid at build)
 !third_party/public-payloads/*.elf
+
+# Generated uncompressed DDS (embed compressed .z instead)
+assets/pic0.dds
+assets/pic1.dds
