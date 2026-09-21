@@ -154,12 +154,12 @@
         return;
       }
       if (progressPct >= 94) return;
-      /* Smaller steps, more often — smoother on PS5 WebKit */
-      var next = progressPct + Math.max(0.28, (94 - progressPct) * 0.028);
+      /* ~10s soft fill while jailbreak stabilizes */
+      var next = progressPct + Math.max(0.55, (94 - progressPct) * 0.055);
       if (next > 94) next = 94;
       var floored = Math.floor(next * 10) / 10;
       if (floored !== progressPct) updateProgress(Math.floor(floored));
-    }, 400);
+    }, 250);
   }
 
   function stopElapsed() {
@@ -216,7 +216,7 @@
     }, 30);
     try { document.body.className = 'done'; } catch (e) {}
     if (successMsgEl) {
-      successMsgEl.innerHTML = '<span class="check">✓</span> Jailbreak completed successfully';
+      successMsgEl.innerHTML = '<span class="check" aria-hidden="true"></span>Jailbreak completed successfully';
     }
   }
 
