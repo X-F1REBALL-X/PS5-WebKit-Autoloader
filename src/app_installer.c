@@ -14,6 +14,7 @@
 
 #include "app_installer.h"
 #include "wkali.h"
+#include "inflate.h"
 #include <ps5/kernel.h>
 
 #define INCASSET(name, file)                                                   \
@@ -30,9 +31,10 @@
 
 INCASSET(param_json, "assets/param.json");
 INCASSET(icon0_png, "assets/icon0.png");
-/* pic0 = selected-app homescreen background (PNG + DDS). */
+/* pic0 = selected-app homescreen background (PNG + deflated DDS). */
 INCASSET(pic0_png, "assets/pic0.png");
-INCASSET(pic0_dds, "assets/pic0.dds");
+INCASSET(pic0_dds_z, "assets/pic0.dds.z");
+#define PIC0_DDS_ORIG_SIZE 8294528u
 
 int sceAppInstUtilInitialize(void);
 int sceAppInstUtilTerminate(void);
@@ -78,6 +80,33 @@ static int install_file(const char *path, const uint8_t *data, size_t size) {
   }
   fclose(f);
   return 0;
+}
+
+
+/* Decompress embedded pic0.dds.z (raw DEFLATE) once. */
+static const uint8_t *pic0_dds_data(size_t *out_size) {
+  static uint8_t *buf;
+  static size_t len;
+  if (buf) {
+    if (out_size)
+      *out_size = len;
+    return buf;
+  }
+  buf = malloc(PIC0_DDS_ORIG_SIZE);
+  if (!buf)
+    return 0;
+  unsigned long destlen = PIC0_DDS_ORIG_SIZE;
+  unsigned long sourcelen = (unsigned long)pic0_dds_z_size;
+  if (puff(buf, &destlen, (unsigned char *)pic0_dds_z, &sourcelen) != 0 ||
+      destlen != PIC0_DDS_ORIG_SIZE) {
+    free(buf);
+    buf = 0;
+    return 0;
+  }
+  len = (size_t)destlen;
+  if (out_size)
+    *out_size = len;
+  return buf;
 }
 
 static int install_app(const char *title_id, const char *dir) {
@@ -168,11 +197,17 @@ int wkali_app_is_up_to_date(void) {
     return 0;
   if (needs_update(pic1_path, pic0_png, pic0_png_size))
     return 0;
-  if (needs_update(pic0_dds_path, pic0_dds, pic0_dds_size))
-    return 0;
+  {
+    size_t dds_sz = 0;
+    const uint8_t *dds = pic0_dds_data(&dds_sz);
+    if (!dds)
+      return 0;
+    if (needs_update(pic0_dds_path, dds, dds_sz))
+      return 0;
+    if (needs_update(appmeta_pic0_dds, dds, dds_sz))
+      return 0;
+  }
   if (needs_update(appmeta_pic0, pic0_png, pic0_png_size))
-    return 0;
-  if (needs_update(appmeta_pic0_dds, pic0_dds, pic0_dds_size))
     return 0;
   return 1;
 }
@@ -204,13 +239,20 @@ static void mirror_appmeta(const char *title_id) {
   if (install_file(path, pic0_png, pic0_png_size))
     wkali_log("[WKALI] appmeta pic1.png failed\n");
 
-  snprintf(path, sizeof(path), "/user/appmeta/%s/pic0.dds", title_id);
-  if (install_file(path, pic0_dds, pic0_dds_size))
-    wkali_log("[WKALI] appmeta pic0.dds failed\n");
-
-  snprintf(path, sizeof(path), "/user/appmeta/%s/pic1.dds", title_id);
-  if (install_file(path, pic0_dds, pic0_dds_size))
-    wkali_log("[WKALI] appmeta pic1.dds failed\n");
+  {
+    size_t dds_sz = 0;
+    const uint8_t *dds = pic0_dds_data(&dds_sz);
+    if (!dds) {
+      wkali_log("[WKALI] appmeta pic0.dds inflate failed\n");
+    } else {
+      snprintf(path, sizeof(path), "/user/appmeta/%s/pic0.dds", title_id);
+      if (install_file(path, dds, dds_sz))
+        wkali_log("[WKALI] appmeta pic0.dds failed\n");
+      snprintf(path, sizeof(path), "/user/appmeta/%s/pic1.dds", title_id);
+      if (install_file(path, dds, dds_sz))
+        wkali_log("[WKALI] appmeta pic1.dds failed\n");
+    }
+  }
 }
 
 int wkali_install_app_if_needed(void) {
@@ -293,12 +335,14 @@ int wkali_install_app_if_needed(void) {
   {
     char pic0_dds_path[256];
     char pic1_dds_path[256];
+    size_t dds_sz = 0;
+    const uint8_t *dds = pic0_dds_data(&dds_sz);
     snprintf(pic0_dds_path, sizeof(pic0_dds_path),
              "/user/app/%s/sce_sys/pic0.dds", title_id);
     snprintf(pic1_dds_path, sizeof(pic1_dds_path),
              "/user/app/%s/sce_sys/pic1.dds", title_id);
-    if (install_file(pic0_dds_path, pic0_dds, pic0_dds_size) ||
-        install_file(pic1_dds_path, pic0_dds, pic0_dds_size)) {
+    if (!dds || install_file(pic0_dds_path, dds, dds_sz) ||
+        install_file(pic1_dds_path, dds, dds_sz)) {
       wkali_log("[WKALI] Failed to install pic0/pic1.dds\n");
       sceAppInstUtilTerminate();
       return -1;
