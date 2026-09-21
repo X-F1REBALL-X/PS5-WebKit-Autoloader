@@ -144,11 +144,11 @@
         progressTimer = 0;
         return;
       }
-      if (progressPct >= 92) return;
-      var next = progressPct + Math.max(0.35, (92 - progressPct) * 0.035);
-      if (next > 92) next = 92;
+      if (progressPct >= 94) return;
+      var next = progressPct + Math.max(0.55, (94 - progressPct) * 0.045);
+      if (next > 94) next = 94;
       updateProgress(Math.floor(next));
-    }, 400);
+    }, 280);
   }
 
   function stopElapsed() {
@@ -191,7 +191,17 @@
       clearInterval(progressTimer);
       progressTimer = 0;
     }
-    updateProgress(100, message || 'Jailbreak completed successfully');
+    var from = progressPct;
+    var start = Date.now();
+    if (message && progressLabel) progressLabel.textContent = message;
+    var anim = setInterval(function () {
+      var p = Math.min(1, (Date.now() - start) / 650);
+      updateProgress(Math.floor(from + (100 - from) * p));
+      if (p >= 1) {
+        try { clearInterval(anim); } catch (eA) {}
+        updateProgress(100, message || 'Jailbreak completed successfully');
+      }
+    }, 30);
     try { document.body.className = 'done'; } catch (e) {}
     if (successMsgEl) {
       successMsgEl.innerHTML = '<span class="check">✓</span> Jailbreak completed successfully';
@@ -399,12 +409,12 @@
         || /^(STAGE[0-5]|ALLPROC-CHECK|ALIASES-REPAIRED|POOPS-COMPLETE|POOPS-VERDICT|LATCH-HELD|LATCH-READ|OFFSETS-READY|WEBKIT-BASE|MODULE-BASES|SOCKETS|SPAWN|WAKEGATE)/.test(line)) {
         uiLog('[log] ' + line, 'info');
         startProgressDriver();
-        if (/^STAGE0|^POOPS-COMPLETE/.test(line)) bumpProgressFloor(20);
-        else if (/^STAGE1/.test(line)) bumpProgressFloor(35);
-        else if (/^STAGE2/.test(line)) bumpProgressFloor(50);
-        else if (/^STAGE3/.test(line)) bumpProgressFloor(65);
-        else if (/^STAGE4/.test(line)) bumpProgressFloor(78);
-        else if (/^STAGE5|^SPAWN|^POOPS-VERDICT/.test(line)) bumpProgressFloor(90);
+        if (/^STAGE0|^POOPS-COMPLETE/.test(line)) bumpProgressFloor(18);
+        else if (/^STAGE1/.test(line)) bumpProgressFloor(32);
+        else if (/^STAGE2/.test(line)) bumpProgressFloor(46);
+        else if (/^STAGE3/.test(line)) bumpProgressFloor(60);
+        else if (/^STAGE4/.test(line)) bumpProgressFloor(74);
+        else if (/^STAGE5|^SPAWN|^POOPS-VERDICT/.test(line)) bumpProgressFloor(88);
       } else if (/FAIL|ERROR|REFUSED|REBOOT|failed|panic|exception/i.test(line)
         || /^\[-\]/.test(line)) {
         uiLog('[log] ' + line, 'error');
@@ -424,24 +434,23 @@
           finished = true;
           finishProgressFail('Jailbreak failed - restart your console');
         }
-      } else if (/success|completed|elf loader ready|elfldr/i.test(st)
-        || lastStageCls.indexOf('ok') !== -1) {
+      } else if (/jailbreak completed|completed successfully|elf loader ready/i.test(st)) {
         uiLog('[stage] ' + lastStageText, 'success');
-        bumpProgressFloor(95);
-      } else if (/stage\s*5|ps10|payload/i.test(st)) {
-        bumpProgressFloor(80);
+        bumpProgressFloor(94);
+      } else if (/stage\s*5|ps10|payload|autoload|elfldr/i.test(st)) {
+        bumpProgressFloor(82);
         uiLog('[stage] ' + lastStageText, 'info');
       } else if (/stage\s*4|ps9/i.test(st)) {
-        bumpProgressFloor(65);
+        bumpProgressFloor(70);
         uiLog('[stage] ' + lastStageText, 'info');
       } else if (/stage\s*3|ps8/i.test(st)) {
-        bumpProgressFloor(50);
+        bumpProgressFloor(58);
         uiLog('[stage] ' + lastStageText, 'info');
       } else if (/stage\s*[12]|ps[56]/i.test(st)) {
-        bumpProgressFloor(35);
+        bumpProgressFloor(40);
         uiLog('[stage] ' + lastStageText, 'info');
-      } else if (/stage\s*0|prepare|preflight|validate/i.test(st)) {
-        bumpProgressFloor(15);
+      } else if (/stage\s*0|prepare|preflight|validate|Jailbreak in progress/i.test(st)) {
+        bumpProgressFloor(18);
         uiLog('[stage] ' + lastStageText, 'info');
       } else {
         uiLog('[stage] ' + lastStageText, 'info');
