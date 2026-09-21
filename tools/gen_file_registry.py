@@ -169,7 +169,6 @@ def compress_entry(data):
 # in sync with POOPS_URL in frontend/autoloader/app.js (which resolves to the
 # same absolute path from the versioned app dir). The trailing v= matches
 # slopkit's ROUTE_VERSION cache-bust (see the patch regeneration notes in
-# ARCHITECTURE.md).
 def poops_iframe_url(app_dir):
     return (
         app_dir + "/slopkit/slopkit/poops.html"
