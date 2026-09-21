@@ -23,6 +23,7 @@
 #include "wkali.h"
 #include "http_server.h"
 #include "ps5_launcher.h"
+#include "app_installer.h"
 
 static pid_t find_pid(const char *name) {
     int mib[4] = {1, 14, 8, 0};
@@ -91,6 +92,15 @@ int main(void) {
 
     wkali_log("[WKALI] PS5-WebKit-Autoloader Installer v%s by X-F1REBALL-X (built %s) starting on port %d...\n",
                    WKAL_FULL_VERSION, WKAL_BUILD_TIME, WKALI_PORT);
+
+    /* Skip full install UI when homescreen app already matches this build. */
+    if (wkali_app_is_up_to_date()) {
+        wkali_log("[WKALI] App already up to date (v%s) — skipping install.\n",
+                  WKAL_FULL_VERSION);
+        wkali_notify("WebKit Autoloader v%s already up to date", WKAL_FULL_VERSION);
+        return 0;
+    }
+
 
     /* Initialize PS5 System Services */
     int err;

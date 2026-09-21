@@ -126,11 +126,12 @@ static int needs_update(const char *path, const uint8_t *expected_data,
   return mismatch != 0;
 }
 
-int wkali_install_app_if_needed(void) {
+int wkali_app_is_up_to_date(void) {
   const char *title_id = WKAL_TITLE_ID;
   char base_dir[256];
   char param_path[256];
   char icon_path[256];
+  struct stat st;
 
   snprintf(base_dir, sizeof(base_dir), "/user/app/%s", title_id);
   snprintf(param_path, sizeof(param_path), "/user/app/%s/sce_sys/param.json",
@@ -138,18 +139,29 @@ int wkali_install_app_if_needed(void) {
   snprintf(icon_path, sizeof(icon_path), "/user/app/%s/sce_sys/icon0.png",
            title_id);
 
-  int update_needed = 0;
-  struct stat st;
-  if (stat(base_dir, &st) != 0) {
-    update_needed = 1;
-  } else {
-    if (needs_update(param_path, param_json, param_json_size))
-      update_needed = 1;
-    if (needs_update(icon_path, icon0_png, icon0_png_size))
-      update_needed = 1;
-  }
+  if (stat(base_dir, &st) != 0)
+    return 0;
+  if (needs_update(param_path, param_json, param_json_size))
+    return 0;
+  if (needs_update(icon_path, icon0_png, icon0_png_size))
+    return 0;
+  return 1;
+}
 
-  if (!update_needed) {
+int wkali_install_app_if_needed(void) {
+  const char *title_id = WKAL_TITLE_ID;
+  char base_dir[256];
+  char param_path[256];
+  char icon_path[256];
+  struct stat st;
+
+  snprintf(base_dir, sizeof(base_dir), "/user/app/%s", title_id);
+  snprintf(param_path, sizeof(param_path), "/user/app/%s/sce_sys/param.json",
+           title_id);
+  snprintf(icon_path, sizeof(icon_path), "/user/app/%s/sce_sys/icon0.png",
+           title_id);
+
+  if (wkali_app_is_up_to_date()) {
     return 0; /* Already installed and up to date */
   }
 
