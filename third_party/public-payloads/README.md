@@ -1,3 +1,3 @@
 # Payloads
 
-Updated payload files for the Autoloader menu.
+Menu payload ELFs used by the Autoloader build.
