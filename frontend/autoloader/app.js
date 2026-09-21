@@ -80,24 +80,33 @@
      AppCache manifest lists these exact URLs so the console can serve them
      offline (AppCache matches URLs including the query string). */
   var POOPS_URL =
-    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&autoload=payload.elf&v=final';
+    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&payload=1&autoload=payload.elf&v=final';
   var P2JB_URL =
-    'slopkit/slopkit/p2jb.html?go=1&auto=1&production=1&log=debug&payload=1&autoload=payload.elf&v=final';
+    'slopkit/slopkit/p2jb.html?go=1&auto=1&production=1&payload=1&autoload=payload.elf&v=final';
 
   var EXPLOIT_URL = '';
   var exploitMode = null;
 
   function uiLog(message, type) {
     type = type || 'info';
+    if (!logContainer) return;
+    /* Quiet CSS hides #logWrapper — skip DOM thrash during the exploit. */
+    var wrap = logContainer.parentNode;
+    if (wrap) {
+      try {
+        var cs = window.getComputedStyle ? getComputedStyle(wrap) : null;
+        if (cs && (cs.display === 'none' || cs.visibility === 'hidden'))
+          return;
+      } catch (eHide) {}
+    }
     var entry = document.createElement('div');
     entry.className = 'line ' + type;
     entry.textContent = message;
-    if (!logContainer) return;
     logContainer.appendChild(entry);
     while (logContainer.childElementCount > MAX_LOG_LINES) {
       logContainer.removeChild(logContainer.firstChild);
     }
-    logContainer.parentNode.scrollTop = logContainer.parentNode.scrollHeight;
+    if (wrap) wrap.scrollTop = wrap.scrollHeight;
     return entry;
   }
 
@@ -135,7 +144,9 @@
     if (floor > progressPct) updateProgress(floor);
   }
 
-  /* Soft fill while the exploit runs so the bar never looks stuck. */
+  /* Soft fill while the exploit runs so the bar never looks stuck.
+     Cap below 100 so finishProgressSuccess can animate the last stretch.
+     Keep a float so Math.floor does not freeze the bar for several ticks. */
   function startProgressDriver() {
     if (progressTimer) return;
     progressTimer = setInterval(function () {
@@ -144,11 +155,14 @@
         progressTimer = 0;
         return;
       }
-      if (progressPct >= 94) return;
-      var next = progressPct + Math.max(0.55, (94 - progressPct) * 0.045);
-      if (next > 94) next = 94;
-      updateProgress(Math.floor(next));
-    }, 280);
+      if (progressPct >= 96) return;
+      var next = progressPct + Math.max(0.4, (96 - progressPct) * 0.04);
+      if (next > 96) next = 96;
+      if (Math.floor(next) > Math.floor(progressPct))
+        updateProgress(Math.floor(next));
+      else
+        progressPct = next;
+    }, 400);
   }
 
   function stopElapsed() {
@@ -172,7 +186,7 @@
     elapsedTimer = setInterval(function () {
       if (!elapsedMsgEl) return;
       elapsedMsgEl.textContent = 'Elapsed ' + formatElapsed(Date.now() - elapsedStart);
-    }, 250);
+    }, 1000);
   }
 
   function setMeta(fwStr, chain) {
@@ -240,7 +254,13 @@
     var fw = detectFirmware();
     var forced = null;
     try {
-      var q = new URLSearchParams(window.location.search).get('force');
+      var q = null;
+      if (typeof URLSearchParams === 'function') {
+        q = new URLSearchParams(window.location.search).get('force');
+      } else {
+        var m = /(?:^|[?&])force=([^&]*)/.exec(window.location.search || '');
+        q = m ? decodeURIComponent(m[1]) : null;
+      }
       if (q === 'umtx2' || q === 'poops' || q === 'p2jb') forced = q;
     } catch (e) { }
     if (forced) {
@@ -434,7 +454,25 @@
           finished = true;
           finishProgressFail('Jailbreak failed - restart your console');
         }
-      } else if (/jailbreak completed|completed successfully|elf loader ready/i.test(st)) {
+      } else if (/loading payload manager|loading webkit|autoloading /i.test(st)) {
+        /* Post-JB ELF sends — keep UI alive, do not freeze at 94/95. */
+        if (statusMsgEl) {
+          statusMsgEl.style.display = '';
+          statusMsgEl.textContent = lastStageText;
+        }
+        try { document.body.className = document.body.className.replace(/\bdone\b/g, '').replace(/\s+/g, ' ').trim(); } catch (eCls) {}
+        bumpProgressFloor(96);
+        uiLog('[stage] ' + lastStageText, 'info');
+      } else if (/autoloaded |jailbreak completed|completed successfully/i.test(st)) {
+        uiLog('[stage] ' + lastStageText, 'success');
+        bumpProgressFloor(96);
+        /* Finish only on true end text — not on early "elf loader ready"
+           before WKAL payload.elf / host installer finishes. */
+        if (!finished && /autoloaded |jailbreak completed|completed successfully/i.test(st)) {
+          finished = true;
+          finishProgressSuccess('Jailbreak completed successfully');
+        }
+      } else if (/elf loader ready/i.test(st)) {
         uiLog('[stage] ' + lastStageText, 'success');
         bumpProgressFloor(94);
       } else if (/stage\s*5|ps10|payload|autoload|elfldr/i.test(st)) {
