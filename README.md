@@ -8,17 +8,17 @@ Jailbreak from the PS5 homescreen.
 
 | Firmware | Status |
 | --- | --- |
-| **1.00 – 5.50** | Works |
+| **1.00 - 5.50** | Works |
 | **6.xx** | No |
-| **7.00 – 12.00** | Works |
-| **12.02 – 12.70** | Works |
+| **7.00 - 12.00** | Works |
+| **12.02 - 12.70** | Works |
 | **13.xx** | No (offsets only) |
 
 ## Install
 
-### Via sjb (9.00 – 12.00 only)
+### Via sjb (9.00 - 12.00 only)
 
-[sjb](https://x-f1reball-x.github.io/sjb/) ([repo](https://github.com/X-F1REBALL-X/sjb)) works only on **9.00 – 12.00**.
+[sjb](https://x-f1reball-x.github.io/sjb/) ([repo](https://github.com/X-F1REBALL-X/sjb)) works only on **9.00 - 12.00**.
 
 On those firmwares, sjb opens Payload Manager first, then installs WK Autoloader.
 
@@ -40,26 +40,25 @@ No internet needed to jailbreak with WK Autoloader. It runs from the homescreen 
 
 ## Credits
 
-With respect to the people behind the bugs and chains this app uses:
+Thanks:
 
-- **Synacktiv** — UMTX kernel bug (CVE-2024-43102)
-- **fail0verflow** / **flatz** — UMTX exploit strategy
-- **TheFloW** — ExploitNetControlImpl (poops base)
-- **Gezine** / **egycnq** — poops; **Gezine** — p2jb
-- **abc** — PSFree (WebKit userland)
-- **shahrilnet** / **n0llptr** — UMTX Lua implementation
-- **SpecterDev** / **ChendoChap** — UMTX WebKit jailbreak work
-- **idlesauce** — umtx2
-- **cheburek3000** — p2jb Lua port
-- **Sonic** — pooP2JB
-- **jordyidk** — slopkit
-- **ufm42** — kexp
-- **John Tornblom** — ELF loader / payloads
-- **zecoxao** — support
-- **Yenyen** — support
-- **EchoStretch** — support
-- **PS5 R&D Discord** — support
-
+- **Synacktiv** - UMTX kernel bug (CVE-2024-43102)
+- **fail0verflow** / **flatz** - UMTX exploit strategy
+- **TheFloW** - ExploitNetControlImpl (poops base)
+- **Gezine** / **egycnq** - poops; **Gezine** - p2jb
+- **abc** - PSFree (WebKit userland)
+- **shahrilnet** / **n0llptr** - UMTX Lua implementation
+- **SpecterDev** / **ChendoChap** - UMTX WebKit jailbreak work
+- **idlesauce** - umtx2
+- **cheburek3000** - p2jb Lua port
+- **Sonic** - pooP2JB
+- **jordyidk** - slopkit
+- **ufm42** - kexp
+- **John Tornblom** - ELF loader / payloads
+- **zecoxao** - support
+- **Yenyen** - support
+- **EchoStretch** - support
+- **PS5 R&D Discord** - support
 
 ## Notes
 
@@ -67,21 +66,20 @@ With respect to the people behind the bugs and chains this app uses:
 
 Sometimes the jailbreak can crash. Most of the time it runs fine. If it fails, restart the console and try again.
 
-(Sometimes a light page refresh can finish the jailbreak with no full restart. It can also freeze or crash instead — pick what works for you.)
+(A light page refresh can also work sometimes. It can freeze or crash too - try what works for you.)
 
 ### Block Sony updates (DNS)
 
-1. Settings → Network → Set Up Internet Connection.
+1. Settings > Network > Set Up Internet Connection.
 2. Use **Custom** setup.
 3. DNS Settings: **Manual**.
 4. Primary DNS: `62.210.38.117`
 5. Leave Secondary DNS empty.
 6. Save and test connection (fail to Sony is OK).
 
-DNS by **Nomadic** — blocks official system updates.
+DNS by **Nomadic** - blocks official system updates.
 
 ### Releases
 
 - Keep only the current Release on GitHub.
 - Short English release notes (for example: System fixes).
-
