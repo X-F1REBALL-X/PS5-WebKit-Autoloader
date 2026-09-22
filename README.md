@@ -2,8 +2,6 @@
 
 Jailbreak from the PS5 homescreen.
 
-**Created by X-F1REBALL-X**
-
 **Download:** [Releases](https://github.com/X-F1REBALL-X/WK-Autoloader/releases)
 
 ## Firmwares
