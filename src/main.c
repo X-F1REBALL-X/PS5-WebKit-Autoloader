@@ -247,11 +247,9 @@ int main(void) {
 
     if (atomic_load(&install_completed)) {
         wkali_notify("WK Autoloader cached successfully!");
-        /* Brief pause so the success UI can paint, then hand off to sjb so
-         * Payload Manager opens only AFTER Autoloader install finished. */
+        /* Brief pause so the success UI can paint, then go Home — closes browser. */
         usleep(800000);
-        ps5_launch_browser(
-            "https://x-f1reball-x.github.io/sjb/?after=wkali");
+        ps5_return_to_home();
     }
     wkali_log_wakeup();
 
