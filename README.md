@@ -32,6 +32,10 @@ If your firmware is **below 9.00** or **above 12.00**, do **not** use sjb for th
 2. Send it to the ELF loader
 3. Open the homescreen app and run the jailbreak
 
+## Offline
+
+No internet needed to jailbreak with WK Autoloader. It runs from the homescreen after install.
+
 ## Notes
 
 - Keep only the current Release on GitHub.
