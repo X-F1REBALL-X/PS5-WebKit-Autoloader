@@ -4,7 +4,7 @@ Jailbreak from the PS5 homescreen.
 
 **Created by X-F1REBALL-X**
 
-**Download:** [Releases](https://github.com/X-F1REBALL-X/PS5-WebKit-Autoloader/releases)
+**Download:** [Releases](https://github.com/X-F1REBALL-X/WK-Autoloader/releases)
 
 ## Firmwares
 
@@ -18,9 +18,19 @@ Jailbreak from the PS5 homescreen.
 
 ## Install
 
-1. Jailbreak with [sjb](https://x-f1reball-x.github.io/sjb/) ([repo](https://github.com/X-F1REBALL-X/sjb)) — it can auto-send this installer after JB.
-2. Or download the `.elf` from Releases and send it to the ELF loader.
-3. Open the homescreen app and run the jailbreak.
+### Via sjb (9.00 – 12.00 only)
+
+[sjb](https://x-f1reball-x.github.io/sjb/) ([repo](https://github.com/X-F1REBALL-X/sjb)) works only on **9.00 – 12.00**.
+
+On those firmwares it can auto-install this app after jailbreak (second run, after you turn off Payload Manager auto-open).
+
+If your firmware is **below 9.00** or **above 12.00**, do **not** use sjb for this. Install WK Autoloader manually (below).
+
+### Manual install (any supported firmware)
+
+1. Download the `.elf` from [Releases](https://github.com/X-F1REBALL-X/WK-Autoloader/releases)
+2. Send it to the ELF loader
+3. Open the homescreen app and run the jailbreak
 
 ## Notes
 
