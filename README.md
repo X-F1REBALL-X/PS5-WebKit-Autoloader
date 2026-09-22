@@ -32,6 +32,10 @@ If Payload Manager **auto-open page** is on, Autoloader will not install. Turn t
 2. Send it to the ELF loader
 3. Open the homescreen app and run the jailbreak
 
+## How it works
+
+Detects your console and firmware version, then runs the matching jailbreak chain.
+
 ## Offline
 
 No internet needed to jailbreak with WK Autoloader. It runs from the homescreen after install.
