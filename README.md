@@ -1,7 +1,5 @@
 ## WK Autoloader
 
-![Jailbreak in progress](screenshots/jailbreak-progress.png)
-
 Jailbreak from the PS5 homescreen.
 
 **Created by X-F1REBALL-X**
