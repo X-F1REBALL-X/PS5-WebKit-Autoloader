@@ -51,8 +51,15 @@ With respect to the people behind the bugs and chains this app uses:
 - **SpecterDev** / **ChendoChap** — UMTX WebKit jailbreak work
 - **idlesauce** — umtx2
 - **cheburek3000** — p2jb Lua port
+- **Sonic** — pooP2JB
+- **jordyidk** — slopkit
+- **ufm42** — kexp
 - **John Tornblom** — ELF loader / payloads
+- **zecoxao** — support
+- **Yenyen** — support
 - **EchoStretch** — support
+- **PS5 R&D Discord** — support
+
 
 ## Notes
 
