@@ -22,9 +22,7 @@ Jailbreak from the PS5 homescreen.
 
 [sjb](https://x-f1reball-x.github.io/sjb/) ([repo](https://github.com/X-F1REBALL-X/sjb)) works only on **9.00 – 12.00**.
 
-On those firmwares it can auto-install this app after jailbreak (second run, after you turn off Payload Manager auto-open).
-
-If your firmware is **below 9.00** or **above 12.00**, do **not** use sjb for this. Install WK Autoloader manually (below).
+On those firmwares, sjb installs WK Autoloader first, waits until install finishes, then opens Payload Manager.
 
 ### Manual install (any supported firmware)
 

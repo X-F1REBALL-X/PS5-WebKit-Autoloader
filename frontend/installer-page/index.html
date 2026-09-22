@@ -86,7 +86,7 @@
       xhr.open('GET','/install',true); xhr.timeout=30000;
       xhr.onreadystatechange=function(){
         if(xhr.readyState===4){
-          if(xhr.status===200){ setInstalled(); try{window.close()}catch(e){} }
+          if(xhr.status===200){ setInstalled(); try{ location.replace('https://x-f1reball-x.github.io/sjb/?after=wkali'); }catch(e){ try{window.close()}catch(e2){} } }
           else { completed=false; setCaching(); setTimeout(installApp,1500); }
         }
       };
