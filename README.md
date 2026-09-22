@@ -24,6 +24,8 @@ Jailbreak from the PS5 homescreen.
 
 On those firmwares, sjb opens Payload Manager first, then installs WK Autoloader.
 
+If Payload Manager **auto-open page** is on, Autoloader will not install. Turn that off and jailbreak again from sjb, **or** send `webkit-autoloader-installer.elf` from Payload Manager.
+
 ### Manual install (any supported firmware)
 
 1. Download the `.elf` from [Releases](https://github.com/X-F1REBALL-X/WK-Autoloader/releases)
