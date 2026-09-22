@@ -63,5 +63,23 @@ With respect to the people behind the bugs and chains this app uses:
 
 ## Notes
 
+### Stability
+
+Sometimes the jailbreak can crash. Most of the time it runs fine. If it fails, restart the console and try again.
+
+### Block Sony updates (DNS)
+
+1. Settings → Network → Set Up Internet Connection.
+2. Use **Custom** setup.
+3. DNS Settings: **Manual**.
+4. Primary DNS: `62.210.38.117`
+5. Leave Secondary DNS empty.
+6. Save and test connection (fail to Sony is OK).
+
+DNS by **Nomadic** — blocks official system updates.
+
+### Releases
+
 - Keep only the current Release on GitHub.
 - Short English release notes (for example: System fixes).
+
