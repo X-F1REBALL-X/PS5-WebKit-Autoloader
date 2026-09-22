@@ -1001,7 +1001,7 @@
   }
 
   function start() {
-    uiLog('PS5-WebKit-Autoloader by X-F1REBALL-X', 'success');
+    uiLog('WK Autoloader by X-F1REBALL-X', 'success');
     if (statusMsgEl) statusMsgEl.textContent = 'Jailbreak started';
     updateProgress(0, 'Jailbreak started');
     startProgressDriver();

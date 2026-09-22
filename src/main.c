@@ -196,7 +196,7 @@ int main(void) {
 
     if (NULL == daemon) {
         wkali_log("[WKALI] Failed to start HTTP daemon!\n");
-        wkali_notify("PS5-WebKit-Autoloader Installer: Error\nHTTP server failed to start");
+        wkali_notify("WK Autoloader Installer: Error\nHTTP server failed to start");
         return 1;
     }
 
