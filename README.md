@@ -67,6 +67,8 @@ With respect to the people behind the bugs and chains this app uses:
 
 Sometimes the jailbreak can crash. Most of the time it runs fine. If it fails, restart the console and try again.
 
+(Sometimes a light page refresh can finish the jailbreak with no full restart. It can also freeze or crash instead — pick what works for you.)
+
 ### Block Sony updates (DNS)
 
 1. Settings → Network → Set Up Internet Connection.
