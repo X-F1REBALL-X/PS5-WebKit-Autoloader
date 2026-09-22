@@ -38,6 +38,22 @@ Detects your console and firmware version, then runs the matching jailbreak chai
 
 No internet needed to jailbreak with WK Autoloader. It runs from the homescreen after install.
 
+## Credits
+
+With respect to the people behind the bugs and chains this app uses:
+
+- **Synacktiv** — UMTX kernel bug (CVE-2024-43102)
+- **fail0verflow** / **flatz** — UMTX exploit strategy
+- **TheFloW** — ExploitNetControlImpl (poops base)
+- **Gezine** / **egycnq** — poops; **Gezine** — p2jb
+- **abc** — PSFree (WebKit userland)
+- **shahrilnet** / **n0llptr** — UMTX Lua implementation
+- **SpecterDev** / **ChendoChap** — UMTX WebKit jailbreak work
+- **idlesauce** — umtx2
+- **cheburek3000** — p2jb Lua port
+- **John Tornblom** — ELF loader / payloads
+- **EchoStretch** — support
+
 ## Notes
 
 - Keep only the current Release on GitHub.
