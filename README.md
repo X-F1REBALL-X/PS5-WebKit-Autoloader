@@ -55,10 +55,10 @@ Thanks:
 - **jordyidk** - slopkit
 - **ufm42** - kexp
 - **John Tornblom** - ELF loader / payloads
-- **zecoxao** - support
-- **Yenyen** - support
-- **EchoStretch** - support
-- **PS5 R&D Discord** - support
+- **zecoxao** - firmware dumps
+- **Yenyen** - offsets / research
+- **EchoStretch** - hosts / tools
+- **PS5 R&D Discord** - community research
 
 ## Notes
 
