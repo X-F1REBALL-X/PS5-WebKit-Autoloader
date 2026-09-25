@@ -1,8 +1,8 @@
-## WK Autoloader
+# WK-AutoLoader
 
 Jailbreak from the PS5 homescreen.
 
-**Download:** [Releases](https://github.com/X-F1REBALL-X/WK-Autoloader/releases)
+**Download:** [Releases](https://github.com/X-F1REBALL-X/WK-AutoLoader/releases)
 
 ## Firmwares
 
@@ -26,7 +26,7 @@ If Payload Manager **auto-open page** is on, Autoloader will not install. Turn t
 
 ### Manual install (any supported firmware)
 
-1. Download the `.elf` from [Releases](https://github.com/X-F1REBALL-X/WK-Autoloader/releases)
+1. Download the `.elf` from [Releases](https://github.com/X-F1REBALL-X/WK-AutoLoader/releases)
 2. Send it to the ELF loader
 3. Open the homescreen app and run the jailbreak
 
